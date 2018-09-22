@@ -7,7 +7,7 @@
 [google/leveldb](https://github.com/google/leveldb) - 这个是最新的
 
 提交文件放在相应目录下，文件名称：`xxx - 时间 - 作者`。    
-所有 `README` 文档均由组长完成。   
+**所有 `README` 文档均由组长完成。**   
 
 ![](assets/JIM项目结构.png)
 
@@ -28,8 +28,8 @@
 
 因为是第一次，又是中秋节，就少布置一些任务。   
 
-1. 阅读[这篇文档](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/Understand%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/README.md)，配置及使用 understand.
-2. 看下面4片文章，了解leveldb的整体构架。
+1. 阅读 [这篇文档](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/Understand%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/README.md)，配置及使用 understand.
+2. 阅读下面4篇文章，了解 `leveldb` 的整体构架。
 
 - [LevelDB 源码分析：主体结构](http://cighao.com/2016/08/14/leveldb-source-analysis-02-structure/)
 - [LevelDB实现总结](http://morefreeze.github.io/2016/05/LevelDB-Summarize.html)
