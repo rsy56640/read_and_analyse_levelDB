@@ -45,4 +45,10 @@ clone [这个仓库](https://github.com/rsy56640/leveldb) 到本地
 
 ![](assets/class_UML2.png)
 
+对于比较复杂的函数，点击右键，查看控制流程：
+
+![](assets/control_flow.png)
+
+![](assets/control_flow2.png)
+
 其他的，比如 **搜索**、**跳转**、**查询依赖** 等功能也很强大，就不一一列举了。
