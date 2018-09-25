@@ -31,10 +31,32 @@
 1. 阅读 [这篇文档](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/Understand%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/README.md)，配置及使用 understand.
 2. 阅读下面4篇文章，了解 `leveldb` 的整体构架。
 
-- [LevelDB 源码分析：主体结构](http://cighao.com/2016/08/14/leveldb-source-analysis-02-structure/)
+<a></a>
+
+- [LevelDB 源码分析：主体结构](http://cighao.com/2016/08/14/leveldb-source-analysis-02-structure/)  
 - [LevelDB实现总结](http://morefreeze.github.io/2016/05/LevelDB-Summarize.html)
 - [我的leveldb总结](https://blog.csdn.net/poi7777/article/details/49124491)
 - [LevelDB详解](https://blog.csdn.net/linuxheik/article/details/52768223)
+
+
+### 09-26 ~ 10-2
+
+从一些基础工具库开始读起。
+
+- [Status]()：
+  - 可参考：
+- [Options, Env]()：
+  - 可参考：
+- [Comparator]()：
+  - 可参考：
+- [ParsedInternalKey, InternalKey, LookupKey]()：
+  - 可参考：
+- [Arena]()：任思远
+  - 可参考：
+- [TableCache]()：任思远
+  - 可参考：
+
+
 
 
 
