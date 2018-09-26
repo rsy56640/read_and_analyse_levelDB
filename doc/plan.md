@@ -72,13 +72,13 @@
   - 总结：
 - [Arena]()：任思远
   - `util/arena.h`, `util/arena.cc`
-  - 总结：
+  - 总结：Arena 主要与 MemTable 关联使用，实际主要用于 SkipList 中的 Node 内存分配，统一 MemTable 的内存分配需求，减少内存分配的实际系统调用次数（尤其针对小块内存）。
 - [TableCache]()：任思远
   - `db/table_cache.h`, `db/table_cache.cc`
   - 总结：
 - [Coding]()：任思远
   - `util/coding.h`
-  - 总结：
+  - 总结：用于压缩 int 所占的存储空间的一套编解码工具。
 
 
 ### 10-03 ~ 10-09 第六周（演讲）
