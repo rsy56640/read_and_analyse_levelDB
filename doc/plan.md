@@ -43,17 +43,23 @@
 
 从一些基础工具库开始读起。
 
-- [Status]()：
+- [Status]()：杜致
+  - `util/status.cc`, `include/leveldb/status.h`
   - 可参考：
-- [Options, Env]()：
+- [Options, Env]()：季宇恒
+  - `util/options.cc`, `include/leveldb/options.h`, `util/env.cc`, `include/leveldb/env.h`, 文档名叫 "Options.md" 和 "Env.md"
   - 可参考：
-- [Comparator]()：
+- [Comparator]()：毛凯
+  - `util/comparator.cc`, `include/leveldb/comparator.h`
   - 可参考：
-- [ParsedInternalKey, InternalKey, LookupKey]()：
+- [ParsedInternalKey, InternalKey, LookupKey]()：苏胜
+  - `db/dbformat.h`, `db/dbformat.cc`, 文档名叫 "dbformat_key.md"
   - 可参考：
 - [Arena]()：任思远
+  - `util/arena.h`, `util/arena.cc`
   - 可参考：
 - [TableCache]()：任思远
+  - `db/table_cache.h`, `db/table_cache.cc`
   - 可参考：
 
 
