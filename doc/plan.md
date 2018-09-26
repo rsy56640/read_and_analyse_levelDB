@@ -51,22 +51,27 @@
 - [Status]()：杜致
   - `util/status.cc`, `include/leveldb/status.h`, 文档放置于 "DB" 文件夹下
   - 可参考：
+      - [leveldb源码分析之Status](http://luodw.cc/2015/10/15/leveldb-03/)
+  - 总结：返回状态，封装了错误号和错误信息，统一进行处理
 - [Options, Env]()：季宇恒
   - `util/options.cc`, `include/leveldb/options.h`, `util/env.cc`, `include/leveldb/env.h`, 文档名叫 "Options.md" 和 "Env.md"
-  - 可参考：
+  - 指导：抽象了整个 db 的环境与配置选项，主要搞清楚接口与参数的说明
+  - 可参考：[leveldb](https://dirtysalt.github.io/html/leveldb.html)
+  - 总结：
 - [Comparator]()：毛凯
   - `util/comparator.cc`, `include/leveldb/comparator.h`
   - 可参考：
+  - 总结：
 - [ParsedInternalKey, InternalKey, LookupKey]()：苏胜
   - `db/dbformat.h`, `db/dbformat.cc`, 文档名叫 "dbformat_key.md", 文档放置于 "DB" 文件夹下
   - 可参考：
+  - 总结：
 - [Arena]()：任思远
   - `util/arena.h`, `util/arena.cc`
-  - 可参考：
+  - 总结：
 - [TableCache]()：任思远
   - `db/table_cache.h`, `db/table_cache.cc`
-  - 可参考：
-
+  - 总结：
 
 
 ### 10-03 ~ 10-09
@@ -82,6 +87,7 @@
 - [skiplist]()
   - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间，来看，之后接 `memtable`
   - 可参考：
+      - [leveldb源码分析之Skiplist](http://luodw.cc/2015/10/16/leveldb-05/)
 - [Iterator]()
   - `include/leveldb/iterator.h`, `table/iterator.cc`
   - 可参考：
@@ -102,11 +108,67 @@
 
 - [FilterPolicy]()
   - `include/leveldb/filter_policy.h`
+  - 指导：
   - 可参考：
-- []()
-- []()
-- []()
-- []()
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
 
 
+
+### 10-17 ~ 10-23
+
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
+- []()：
+  - ``
+  - 指导：
+  - 可参考：
+      - []()
+  - 总结：
 
