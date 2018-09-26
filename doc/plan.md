@@ -59,7 +59,9 @@
 - [Options, Env]()：季宇恒
   - `util/options.cc`, `include/leveldb/options.h`, `util/env.cc`, `include/leveldb/env.h`, 文档名叫 "Options.md" 和 "Env.md"
   - 指导：抽象了整个 db 的环境与配置选项，主要搞清楚接口与参数的说明
-  - 可参考：[leveldb](https://dirtysalt.github.io/html/leveldb.html)
+  - 可参考：
+      - [leveldb](https://dirtysalt.github.io/html/leveldb.html)
+      - [文件系统及Env-leveldb源码剖析(5)](http://www.pandademo.com/2016/03/file-system-and-env-leveldb-source-dissect-5/)
   - 总结：
 - [Comparator]()：毛凯
   - `util/comparator.cc`, `include/leveldb/comparator.h`, `db/dbformat.h`, `db/dbformat.cc`
@@ -87,7 +89,7 @@
 
 - [BloomFilter]()
   - `util/bloom.cc`
-  - 可参考：
+  - 可参考：[BloomFilter - 基本理论](https://www.jianshu.com/p/181f40047834)
 - [Logging]()
   - `util/logging.h`, `util/logging.cc`
   - 可参考：
