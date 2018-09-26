@@ -22,7 +22,10 @@
 
 -----
 
+## 所有 "体系结构的描述" 汇总在该模块的 `README.md` 文件下，总体的描述我最后再写。
+
 ## 计划开始时间：2018-09-19   
+
 
 ### 09-19 ~ 09-21
 
@@ -59,18 +62,22 @@
   - 可参考：[leveldb](https://dirtysalt.github.io/html/leveldb.html)
   - 总结：
 - [Comparator]()：毛凯
-  - `util/comparator.cc`, `include/leveldb/comparator.h`
-  - 可参考：
+  - `util/comparator.cc`, `include/leveldb/comparator.h`, `db/dbformat.h`, `db/dbformat.cc`
+  - 指导：`Comparator` 下主要有两种实现：`BytewiseComparatorImpl`, `InternalKeyComparator`
   - 总结：
 - [ParsedInternalKey, InternalKey, LookupKey]()：苏胜
   - `db/dbformat.h`, `db/dbformat.cc`, 文档名叫 "dbformat_key.md", 文档放置于 "DB" 文件夹下
-  - 可参考：
+  - 指导：db 内部包装的 key 结构，需要阐释清楚 **具体结构**，**含义**，**用途** 以及 **依赖于key的操作**
+  - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
   - 总结：
 - [Arena]()：任思远
   - `util/arena.h`, `util/arena.cc`
   - 总结：
 - [TableCache]()：任思远
   - `db/table_cache.h`, `db/table_cache.cc`
+  - 总结：
+- [Coding]()：任思远
+  - `util/coding.h`
   - 总结：
 
 
@@ -85,9 +92,10 @@
   - `util/logging.h`, `util/logging.cc`
   - 可参考：
 - [skiplist]()
-  - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间，来看，之后接 `memtable`
+  - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看，之后接 `memtable`
   - 可参考：
       - [leveldb源码分析之Skiplist](http://luodw.cc/2015/10/16/leveldb-05/)
+      - [leveldb](https://www.cnblogs.com/xueqiuqiu/tag/leveldb/)
 - [Iterator]()
   - `include/leveldb/iterator.h`, `table/iterator.cc`
   - 可参考：
@@ -112,8 +120,8 @@
   - 可参考：
       - []()
   - 总结：
-- []()：
-  - ``
+- [FileName]()：
+  - `db/filename.h`, `db/filename.cc`
   - 指导：
   - 可参考：
       - []()
