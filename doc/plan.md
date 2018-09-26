@@ -16,8 +16,13 @@
 
 -----
 
-### 计划开始时间：2018-09-19   
+# 所有模块均可参考 [reference](https://github.com/rsy56640/read_and_analyse_levelDB/tree/master/reference) 前5的 链接！！！！！
+# 要求是：模块功能 和 对外接口 必须要弄清楚，但实现细节不要求看懂（因为各位以后都很可能不写cpp）
+# 在写 模块文档 前一定要参考 [项目文档格式说明](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E.md)
 
+-----
+
+## 计划开始时间：2018-09-19   
 
 ### 09-19 ~ 09-21
 
@@ -39,7 +44,7 @@
 - [LevelDB详解](https://blog.csdn.net/linuxheik/article/details/52768223)
 
 
-### 09-26 ~ 10-2
+### 09-26 ~ 10-02
 
 从一些基础工具库开始读起。
 
@@ -63,6 +68,45 @@
   - 可参考：
 
 
+
+### 10-03 ~ 10-09
+
+这周看一些有趣的构件。
+
+- [BloomFilter]()
+  - `util/bloom.cc`
+  - 可参考：
+- [Logging]()
+  - `util/logging.h`, `util/logging.cc`
+  - 可参考：
+- [skiplist]()
+  - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间，来看，之后接 `memtable`
+  - 可参考：
+- [Iterator]()
+  - `include/leveldb/iterator.h`, `table/iterator.cc`
+  - 可参考：
+- [WriteBatch]()：任思远
+  - `include/leveldb/write_batch.h`, `db/write_batch.cc`
+  - 可参考：
+- [Table]()：任思远
+  - `include/leveldb/table.h`, `table/table.cc`
+  - 可参考：
+- [Block]()：任思远
+  - `table/block.h`, `table/block.cc`
+  - 可参考：
+
+
+### 10-10 ~ 10-16
+
+
+
+- [FilterPolicy]()
+  - `include/leveldb/filter_policy.h`
+  - 可参考：
+- []()
+- []()
+- []()
+- []()
 
 
 
