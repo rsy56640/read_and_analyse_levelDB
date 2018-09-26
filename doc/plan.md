@@ -63,7 +63,7 @@
   - 总结：
 - [Comparator]()：毛凯
   - `util/comparator.cc`, `include/leveldb/comparator.h`, `db/dbformat.h`, `db/dbformat.cc`
-  - 指导：`Comparator` 下主要有两种实现：`BytewiseComparatorImpl`, `InternalKeyComparator`
+  - 指导：`Comparator` 下主要有两种实现：`BytewiseComparatorImpl`, `InternalKeyComparator`，区分两者的 **功能**，以及 **分别在什么情况下使用**
   - 总结：
 - [ParsedInternalKey, InternalKey, LookupKey]()：苏胜
   - `db/dbformat.h`, `db/dbformat.cc`, 文档名叫 "dbformat_key.md", 文档放置于 "DB" 文件夹下
