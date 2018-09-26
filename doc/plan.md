@@ -18,7 +18,7 @@
 
 # 所有模块均可参考 [reference](https://github.com/rsy56640/read_and_analyse_levelDB/tree/master/reference) 前5的 链接！！！！！
 # 要求是：模块功能 和 对外接口 必须要弄清楚，但实现细节不要求看懂（因为各位以后都很可能不写cpp）
-# 在写 模块文档 前一定要参考 [项目文档格式说明](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E.md)
+# 在写 模块文档 前一定要参考 [项目文档格式说明](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E.md)，文档格式直接copy [文档格式模板.md](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F%E6%A8%A1%E6%9D%BF.md)
 
 -----
 
@@ -47,7 +47,7 @@
 - [LevelDB详解](https://blog.csdn.net/linuxheik/article/details/52768223)
 
 
-### 09-26 ~ 10-02
+### 09-26 ~ 10-02 第五周
 
 从一些基础工具库开始读起。
 
@@ -81,7 +81,7 @@
   - 总结：
 
 
-### 10-03 ~ 10-09
+### 10-03 ~ 10-09 第六周（演讲）
 
 这周看一些有趣的构件。
 
@@ -110,7 +110,7 @@
   - 可参考：
 
 
-### 10-10 ~ 10-16
+### 10-10 ~ 10-16 第七周
 
 
 
@@ -147,7 +147,7 @@
 
 
 
-### 10-17 ~ 10-23
+### 10-17 ~ 10-23 第八周
 
 - []()：
   - ``
