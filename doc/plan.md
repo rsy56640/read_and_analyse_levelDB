@@ -105,7 +105,7 @@
   - 可参考：
   - 总结：
 - [skiplist]()
-  - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看，之后接 `memtable`
+  - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看。
   - 可参考：
       - [leveldb源码分析之Skiplist](http://luodw.cc/2015/10/16/leveldb-05/)
       - [leveldb](https://www.cnblogs.com/xueqiuqiu/tag/leveldb/)
