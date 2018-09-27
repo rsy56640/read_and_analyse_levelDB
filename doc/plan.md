@@ -26,12 +26,13 @@
 
 ## 计划开始时间：2018-09-19   
 
-
+&nbsp;   
 ### 09-19 ~ 09-21
 
 全组成员安装 understand 源码阅读软件，阅读 [文档格式说明](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E.md)    
 阅读 [参考资料](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/README.md)，了解 `leveldb` 的大概结构。   
 
+&nbsp;   
 ### 09-22 ~ 09-24
 
 因为是第一次，又是中秋节，就少布置一些任务。   
@@ -47,6 +48,7 @@
 - [LevelDB详解](https://blog.csdn.net/linuxheik/article/details/52768223)
 
 
+&nbsp;   
 ### 09-26 ~ 10-02 第五周
 
 从一些基础工具库开始读起。
@@ -72,17 +74,24 @@
   - 指导：db 内部包装的 key 结构，需要阐释清楚 **具体结构**，**含义**，**用途** 以及 **依赖于key的操作**
   - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
   - 总结：
+- [Slice](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Slice%20-%202018-09-16%20-%20rsy.md)：任思远
+  - `include/leveldb/slice.h`
+  - 总结：为操作数据的方便，将数据和长度包装成 Slice 使用，直接操控指针避免不必要的数据拷贝。就是个简易的 **`string`**.
 - [Arena](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/Arena/arena%20-%202018-09-30%20-%20rsy.md)：任思远
   - `util/arena.h`, `util/arena.cc`
   - 总结：Arena 主要与 MemTable 关联使用，实际主要用于 SkipList 中的 Node 内存分配，统一 MemTable 的内存分配需求，减少内存分配的实际系统调用次数（尤其针对小块内存）。
-- [TableCache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/TableCache%20-%202018-09-30%20-%20rsy.md)：任思远
-  - `db/table_cache.h`, `db/table_cache.cc`
-  - 总结：
 - [Coding](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/Coding/coding%20-%202018-09-06%20-%20rsy.md)：任思远
   - `util/coding.h`
   - 总结：用于压缩 int 所占的存储空间的一套编解码工具。
+- [Cache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/LRU/cache%20-%202018-09-20%20-%20rsy.md)：任思远
+  - `include/leveldb/cache.h`, `util/cache.cc`
+  - 总结：在 TableCache 用于缓存 SSTable 的对应索引元数据。
+- [TableCache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/TableCache%20-%202018-09-30%20-%20rsy.md)：任思远
+  - `db/table_cache.h`, `db/table_cache.cc`
+  - 总结：
 
 
+&nbsp;   
 ### 10-03 ~ 10-09 第六周（演讲）
 
 这周看一些有趣的构件。
@@ -90,28 +99,39 @@
 - [BloomFilter]()
   - `util/bloom.cc`
   - 可参考：[BloomFilter - 基本理论](https://www.jianshu.com/p/181f40047834)
+  - 总结：
 - [Logging]()
   - `util/logging.h`, `util/logging.cc`
   - 可参考：
+  - 总结：
 - [skiplist]()
   - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看，之后接 `memtable`
   - 可参考：
       - [leveldb源码分析之Skiplist](http://luodw.cc/2015/10/16/leveldb-05/)
       - [leveldb](https://www.cnblogs.com/xueqiuqiu/tag/leveldb/)
-- [Iterator]()
+- [FileNumber, FileName]()：
+  - `db/filename.h`, `db/filename.cc`, `db/dbformat.h`
+  - 指导：
+      - db 创建文件时会按照规则将 `FileNumber` 加上特定后缀作为文件名。 所以， 运行时只需要记录 `FileNumber`（uint64_t)即可定位到具体的文件路径，省掉了字符串的麻烦。 `FileNumber` 在 db 中全局递增。
+      - db 中的文件用文件名区分类型。
+  - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
+  - 总结：
+- [Iterator]()：任思远
   - `include/leveldb/iterator.h`, `table/iterator.cc`
   - 可参考：
+  - 总结：
 - [WriteBatch]()：任思远
   - `include/leveldb/write_batch.h`, `db/write_batch.cc`
-  - 可参考：
+  - 总结：
 - [Table]()：任思远
   - `include/leveldb/table.h`, `table/table.cc`
-  - 可参考：
+  - 总结：
 - [Block]()：任思远
   - `table/block.h`, `table/block.cc`
-  - 可参考：
+  - 总结：
 
 
+&nbsp;   
 ### 10-10 ~ 10-16 第七周
 
 
@@ -122,11 +142,12 @@
   - 可参考：
       - []()
   - 总结：
-- [FileName]()：
-  - `db/filename.h`, `db/filename.cc`
+- [ValueType, SequenceNumber]()：
+  - `db/dbformat.h`
   - 指导：
-  - 可参考：
-      - []()
+      - `put` 插入新的 kv 数据；`delete` 是 `put` 空，为了区分真实 kv 数据和删除操作的 mock 数据，使用 `ValueType` 来标识。
+      - leveldb 中的每次更新（`put`/`delete`)操作都拥有一个版本，由 `SequnceNumber` 来标识，整个 db 有一个全局值保存着当前使用到的 `SequnceNumber`。
+  - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
   - 总结：
 - []()：
   - ``
@@ -148,7 +169,7 @@
   - 总结：
 
 
-
+&nbsp;   
 ### 10-17 ~ 10-23 第八周
 
 - []()：
