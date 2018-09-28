@@ -24,6 +24,20 @@
 
 ## 所有 "体系结构的描述" 汇总在该模块的 `README.md` 文件下（我负责写），总体的描述我最后再写。
 
+-----
+
+&nbsp;   
+**软件体系架构恢复**：（即本学期课程目标）
+
+- [总体架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E8%BD%AF%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
+  - [数据库逻辑架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/README.md)
+  - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md)
+  - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md)
+  - [其他：平台相关-锁-信号-原子-压缩](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/%E5%B9%B3%E5%8F%B0%E7%9B%B8%E5%85%B3-%E9%94%81-%E4%BF%A1%E5%8F%B7-%E5%8E%9F%E5%AD%90-%E5%8E%8B%E7%BC%A9/README.md) 
+
+-----
+
+&nbsp;   
 ## 计划开始时间：2018-09-19   
 
 &nbsp;   
@@ -76,50 +90,57 @@
   - 总结：
 - [Slice](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Slice%20-%202018-09-16%20-%20rsy.md)：任思远
   - `include/leveldb/slice.h`
-  - 总结：为操作数据的方便，将数据和长度包装成 Slice 使用，直接操控指针避免不必要的数据拷贝。就是个简易的 **`string`**.
+  - 总结：为操作数据的方便，将数据和长度包装成 Slice 使用，直接操控指针避免不必要的数据拷贝。就是个简易的 **`string`**
 - [Arena](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/Arena/arena%20-%202018-09-30%20-%20rsy.md)：任思远
   - `util/arena.h`, `util/arena.cc`
-  - 总结：Arena 主要与 MemTable 关联使用，实际主要用于 SkipList 中的 Node 内存分配，统一 MemTable 的内存分配需求，减少内存分配的实际系统调用次数（尤其针对小块内存）。
+  - 总结：Arena 主要与 MemTable 关联使用，实际主要用于 SkipList 中的 Node 内存分配，统一 MemTable 的内存分配需求，减少内存分配的实际系统调用次数（尤其针对小块内存）
 - [Coding](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/Coding/coding%20-%202018-09-06%20-%20rsy.md)：任思远
   - `util/coding.h`
-  - 总结：用于压缩 int 所占的存储空间的一套编解码工具。
+  - 总结：用于压缩 int 所占的存储空间的一套编解码工具
 - [Cache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/LRU/cache%20-%202018-09-20%20-%20rsy.md)：任思远
   - `include/leveldb/cache.h`, `util/cache.cc`
-  - 总结：在 TableCache 用于缓存 SSTable 的对应索引元数据。
+  - 总结：在 TableCache 用于缓存 SSTable 的对应索引元数据
 - [TableCache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/TableCache%20-%202018-09-30%20-%20rsy.md)：任思远
   - `db/table_cache.h`, `db/table_cache.cc`
   - 总结：
 
 
 &nbsp;   
-### 10-03 ~ 10-09 第六周（演讲）
+### 10-03 ~ 10-09 第六周（演讲: 10-10）
 
 这周看一些有趣的构件。
 
 - [BloomFilter]()
   - `util/bloom.cc`
-  - 可参考：[BloomFilter - 基本理论](https://www.jianshu.com/p/181f40047834)
+  - 指导：布隆过滤器的**效果**，**缺点** 以及 **何时刷新**（我猜的，可能不）
+  - 可参考：
+      - [BloomFilter - 基本理论](https://www.jianshu.com/p/181f40047834)
+      - [布隆过滤器的原理和实现](https://github.com/cpselvis/zhihu-crawler/wiki/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0)
   - 总结：
 - [Logging]()
   - `util/logging.h`, `util/logging.cc`
   - 可参考：
   - 总结：
 - [skiplist]()
-  - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看。
+  - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看
+  - 指导：跳表是工程中常见的数据结构，用于快速的kv查找，优点是比各种 BST（AVL，红黑树）易于实现，而且效率高。主要思想是：如何在链表中维护 “某种结构” 以获得类似二分查找的性质
   - 可参考：
       - [leveldb源码分析之Skiplist](http://luodw.cc/2015/10/16/leveldb-05/)
       - [leveldb](https://www.cnblogs.com/xueqiuqiu/tag/leveldb/)
+      - [深夜学算法之SkipList：让链表飞](https://www.jianshu.com/p/fcd18946994e)
+      - [leveldb(五)：SkipList跳表](https://blog.csdn.net/weixin_36145588/article/details/76393448)
 - [FileNumber, FileName]()：
   - `db/filename.h`, `db/filename.cc`, `db/dbformat.h`
   - 指导：
-      - db 创建文件时会按照规则将 `FileNumber` 加上特定后缀作为文件名。 所以， 运行时只需要记录 `FileNumber`（uint64_t)即可定位到具体的文件路径，省掉了字符串的麻烦。 `FileNumber` 在 db 中全局递增。
-      - db 中的文件用文件名区分类型。
-  - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
+      - db 创建文件时会按照规则将 `FileNumber` 加上特定后缀作为文件名。 所以， 运行时只需要记录 `FileNumber`（uint64_t)即可定位到具体的文件路径，省掉了字符串的麻烦。 `FileNumber` 在 db 中全局递增
+      - db 中的文件用文件名区分类型
+  - 可参考：
+      - [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
+      - [LevelDB源码解析11.文件序号](https://zhuanlan.zhihu.com/p/35343043)
   - 总结：
 - [Iterator]()：任思远
   - `include/leveldb/iterator.h`, `table/iterator.cc`
-  - 可参考：
-  - 总结：
+  - 总结：leveldb 中对 key 的查找和遍历，上层统一使用 `Iterator` 的方式处理，屏蔽底层的处理，统一逻辑。 提供 `RegisterCleanup()` 可以在 `Iterator` 销毁时，做一些清理工作（比如释放 `Iterator` 持有句柄的引用）
 - [WriteBatch]()：任思远
   - `include/leveldb/write_batch.h`, `db/write_batch.cc`
   - 总结：
@@ -145,8 +166,8 @@
 - [ValueType, SequenceNumber]()：
   - `db/dbformat.h`
   - 指导：
-      - `put` 插入新的 kv 数据；`delete` 是 `put` 空，为了区分真实 kv 数据和删除操作的 mock 数据，使用 `ValueType` 来标识。
-      - leveldb 中的每次更新（`put`/`delete`)操作都拥有一个版本，由 `SequnceNumber` 来标识，整个 db 有一个全局值保存着当前使用到的 `SequnceNumber`。
+      - `put` 插入新的 kv 数据；`delete` 是 `put` 空，为了区分真实 kv 数据和删除操作的 mock 数据，使用 `ValueType` 来标识
+      - leveldb 中的每次更新（`put`/`delete`)操作都拥有一个版本，由 `SequnceNumber` 来标识，整个 db 有一个全局值保存着当前使用到的 `SequnceNumber`
   - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
   - 总结：
 - []()：

@@ -11,7 +11,15 @@
 <a id="ShardedLRUCache"></a>
 ## [ShardedLRUCache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/LRU/cache%20-%202018-09-20%20-%20rsy.md)
 
-`ShardedLRUCache` 是用来缓存 sstable 文件句柄以及元数据 和被读过的 sstable 中 dataBlock 的数据。
+**Cache 的主要流程**：   
+
+- 查询会先在memTable中找，如果没找到，会去读index，确定在哪个block中，再去block中读， 这至少需要2次磁盘读取
+- 这里的cache分两种：
+    - TableCache的key为ssTable名称，值包括磁盘文件指针，以及表结构，表结构又包括 index内容及block信息。当查到某个table时，要判断这个key在不在table中，然后再去查 block
+    - BlockCache为可选项，它的key是block_id，value是block内容，这样就避免了一次读取。 这种适合热点读取，如果随机读取并不适合打开BlockCache
+
+&nbsp;   
+**`ShardedLRUCache`** 是用来缓存 sstable 文件句柄以及元数据 和被读过的 sstable 中 dataBlock 的数据。
 
 结构是 hash + LRU：
 

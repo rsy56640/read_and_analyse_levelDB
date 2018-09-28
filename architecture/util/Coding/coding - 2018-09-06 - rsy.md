@@ -31,13 +31,12 @@ Coding 主要是用来完成变长数据以及字符串还有Slice的序列化�
 - GetVarint32Ptr(p,limit,v) 将[p,limit)部分的内存解析为变长uint32放到v里面,返回下一个字节
 - GetVarint64Ptr(p,limit,v) 将[p,limit)部分的内存解析为变长uint64放到v里面,返回下一个字节
 - VarintLength 变长uint32/uint64长度
-- EncodeFixed32 PutFixed32 low-level
-- EncodeFixed64 PutFixed64 low-level
-- EncodeVarint32 PutVarint32 low-level
-- EncodeVarint64 PutVarint64 low-level
+- EncodeFixed32 PutFixed32 保证小端序
+- EncodeFixed64 PutFixed64
+- EncodeVarint32 PutVarint32
+- EncodeVarint64 PutVarint64
 - DecodeFixed32 读取定长uint32
 - DecodeFixed64 读取定长uint64
-- GetVarint32PtrFallback
 - GetVarint32Ptr 从[p,limit)读取uint32并且返回下一个字节.
 
 
