@@ -32,7 +32,7 @@
 - [总体架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E8%BD%AF%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
   - [数据库逻辑架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/README.md)
   - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md)
-  - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md)
+  - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md) ![](https://img.shields.io/badge/leveldb--util-30%25-yellow.svg)
   - [其他：平台相关-锁-信号-原子-压缩](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/%E5%B9%B3%E5%8F%B0%E7%9B%B8%E5%85%B3-%E9%94%81-%E4%BF%A1%E5%8F%B7-%E5%8E%9F%E5%AD%90-%E5%8E%8B%E7%BC%A9/README.md) 
 
 -----
@@ -102,7 +102,7 @@
   - 总结：在 TableCache 用于缓存 SSTable 的对应索引元数据
 - [TableCache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/TableCache%20-%202018-09-30%20-%20rsy.md)：任思远
   - `db/table_cache.h`, `db/table_cache.cc`
-  - 总结：
+  - 总结：`TableCache`缓存的是 sstable 的索引数据，k-v格式为 `file_number` - `TableAndFile`
 
 
 &nbsp;   
@@ -123,9 +123,10 @@
   - 总结：
 - [skiplist]()
   - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看
-  - 指导：跳表是工程中常见的数据结构，用于快速的kv查找，优点是比各种 BST（AVL，红黑树）易于实现，而且效率高。主要思想是：如何在链表中维护 “某种结构” 以获得类似二分查找的性质
+  - 指导：跳表是工程中常见的数据结构，用于快速的kv查找，优点是比各种 BST（AVL，红黑树）易于实现，而且效率也高。主要思想是：如何在链表中维护 “某种结构” 以获得类似二分查找的性质
   - 可参考：
       - [leveldb源码分析之Skiplist](http://luodw.cc/2015/10/16/leveldb-05/)
+      - [leveldb-handlebook](https://leveldb-handbook.readthedocs.io/zh/latest/memorydb.html#id2)
       - [leveldb](https://www.cnblogs.com/xueqiuqiu/tag/leveldb/)
       - [深夜学算法之SkipList：让链表飞](https://www.jianshu.com/p/fcd18946994e)
       - [leveldb(五)：SkipList跳表](https://blog.csdn.net/weixin_36145588/article/details/76393448)
