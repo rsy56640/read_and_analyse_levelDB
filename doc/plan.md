@@ -103,6 +103,9 @@
 - [TableCache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/TableCache%20-%202018-09-30%20-%20rsy.md)：任思远
   - `db/table_cache.h`, `db/table_cache.cc`
   - 总结：`TableCache`缓存的是 sstable 的索引数据，k-v格式为 `file_number` - `TableAndFile`
+- [Iterator]()：任思远
+  - `include/leveldb/iterator.h`, `table/iterator.cc`
+  - 总结：leveldb 中对 key 的查找和遍历，上层统一使用 `Iterator` 的方式处理，屏蔽底层的处理，统一逻辑。 提供 `RegisterCleanup()` 可以在 `Iterator` 销毁时，做一些清理工作（比如释放 `Iterator` 持有句柄的引用）
 
 
 &nbsp;   
@@ -139,9 +142,6 @@
       - [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
       - [LevelDB源码解析11.文件序号](https://zhuanlan.zhihu.com/p/35343043)
   - 总结：
-- [Iterator]()：任思远
-  - `include/leveldb/iterator.h`, `table/iterator.cc`
-  - 总结：leveldb 中对 key 的查找和遍历，上层统一使用 `Iterator` 的方式处理，屏蔽底层的处理，统一逻辑。 提供 `RegisterCleanup()` 可以在 `Iterator` 销毁时，做一些清理工作（比如释放 `Iterator` 持有句柄的引用）
 - [WriteBatch]()：任思远
   - `include/leveldb/write_batch.h`, `db/write_batch.cc`
   - 总结：

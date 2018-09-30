@@ -18,6 +18,7 @@
 - [LevelDB源码剖析 - 专栏](http://mingxinglai.com/cn/categories/#NoSql)
 - [LevelDB实现总结](http://morefreeze.github.io/2016/05/LevelDB-Summarize.html)
 - [leveldb - zhaohai-shen - 专栏](https://www.cnblogs.com/shenzhaohai1989/p/)
+- [leveldb - tgates - 专栏](https://www.cnblogs.com/KevinT/category/590804.html)
 - [巴山独钓 - leveldb源码分析](https://blog.csdn.net/tankles/article/category/1167229)
 - [weixin_36145588的博客 - leveldb - 小专栏](https://blog.csdn.net/weixin_36145588/article/category/6995299)
 - [leveldb源码学习系列 - 小专栏](https://www.cnblogs.com/Jack47/tag/leveldb/)
