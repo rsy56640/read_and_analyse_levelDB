@@ -31,7 +31,7 @@
 
 - [总体架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E8%BD%AF%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
   - [数据库逻辑架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/README.md)
-  - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md)
+  - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md) ![](https://img.shields.io/badge/leveldb--table-1%25-lightgrey.svg)
   - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md) ![](https://img.shields.io/badge/leveldb--util-30%25-yellow.svg)
   - [其他：平台相关-锁-信号-原子-压缩](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/%E5%B9%B3%E5%8F%B0%E7%9B%B8%E5%85%B3-%E9%94%81-%E4%BF%A1%E5%8F%B7-%E5%8E%9F%E5%AD%90-%E5%8E%8B%E7%BC%A9/README.md) 
 
@@ -103,7 +103,7 @@
 - [TableCache](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/TableCache%20-%202018-09-30%20-%20rsy.md)：任思远
   - `db/table_cache.h`, `db/table_cache.cc`
   - 总结：`TableCache`缓存的是 sstable 的索引数据，k-v格式为 `file_number` - `TableAndFile`
-- [Iterator]()：任思远
+- [Iterator](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Iterator%20-%202018-10-01%20-%20rsy.md)：任思远
   - `include/leveldb/iterator.h`, `table/iterator.cc`
   - 总结：leveldb 中对 key 的查找和遍历，上层统一使用 `Iterator` 的方式处理，屏蔽底层的处理，统一逻辑。 提供 `RegisterCleanup()` 可以在 `Iterator` 销毁时，做一些清理工作（比如释放 `Iterator` 持有句柄的引用）
 
