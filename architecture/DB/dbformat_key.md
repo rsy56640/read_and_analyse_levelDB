@@ -68,23 +68,53 @@ Memtable 的查询接口传入的是 LookupKey（class LookupKey），它也是�
 &nbsp;   
 <a id="interface_specification"></a>
 ## 接口说明
+1.ParsedInternalKey
 
+DebugString()用于处理ParsedInternalKey成字符串
 
+2.InternalKey
+
+DecodeFrom() 函数将 Slice 类型的 InternalKey 解码出 string 类型的 InternalKey.
+
+Clear()函数清除InternalKey包含的数据
+
+SetFrom()函数创建新的InternalKey结构
+
+3.LookupKey
+
+Slice memtable_key() const { return Slice(start_, end_ - start_); }  
+返回一个适合MemTable查找的key。
+
+Slice internal_key() const { return Slice(kstart_, end_ - kstart_); }      
+返回一个internal key(适用于传递给内部迭代器)
+
+Slice user_key() const { return Slice(kstart_, end_ - kstart_ - 8); } 返回user key。
+其中 start_是 LookupKey 字符串的开始，end_是结束，kstart_是 start_+ sizeof(varint32)，也就是 user key 字符串的起始地址。
 
 
 &nbsp;   
 <a id="dependency_specification"></a>
 ## 相关依赖说明
-
-
+需要Slice类型的定义和用法
+Slice (include/leveldb/slice.h)
 
 &nbsp;   
 <a id="inner_detail"></a>
 ## 内部实现细节
 
+LookupKey: 
+
+start：  userkey_len  (varint32)   
+
+kstart：  userkey_data (userkey_len)
+
+end：  SequnceNumber/ValueType (uint64)
+
+对 memtable 进行 lookup 时使用 [start,end], 对 sstable lookup 时使用[kstart, end]。 
 
 
 &nbsp;   
 <a id="reference"></a>
 ## 参考资料
-
+- [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
+- [LevelDB源码分析 - 百度文库 100多页..................](https://wenku.baidu.com/view/b3285278b90d6c85ec3ac687.html)
