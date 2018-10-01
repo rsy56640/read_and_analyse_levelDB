@@ -29,9 +29,30 @@ LookupKey(db/dbformat.h,db/dbformat.cc)
    
 <a id="module_function"></a>
 ## 模块功能
+
+![](assets/ParsedInternalKey_10_01.png)
+
+ParsedInternalKey（struct ParsedInternalKey）就是对 InternalKey 分拆后的结果，先来看看 ParsedInternalKey 的成员，
+
+这是一个 struct{
+
+Slice user_key; 
+
+SequenceNumber sequence; 
+
+ValueType type;
+}
+ 
 ![](assets/InternalKey_10_01.png)
 
+class InternalKey 是一个只存储了一个 string，它使用一个 DecodeFrom() 函数将 Slice 类型的 InternalKey 解码出 string 类型的 InternalKey.   
+
+void DecodeFrom(const Slice& s) { rep_.assign(s.data(), s.size()); } 
+ 
+也就是说 InternalKey 是由 User_key.data + SequenceNumber + ValueType组合而成的
+
 ![](assets/LookupKey_10_01.png)
+
 
 &nbsp;   
 <a id="interface_specification"></a>
