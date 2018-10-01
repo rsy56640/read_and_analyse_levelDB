@@ -106,7 +106,7 @@
 - [Iterator](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Iterator%20-%202018-10-01%20-%20rsy.md)：任思远
   - `include/leveldb/iterator.h`, `table/iterator.cc`
   - 总结：leveldb 中对 key 的查找和遍历，上层统一使用 `Iterator` 的方式处理，屏蔽底层的处理，统一逻辑。 提供 `RegisterCleanup()` 可以在 `Iterator` 销毁时，做一些清理工作（比如释放 `Iterator` 持有句柄的引用）
-- [WriteBatch]()：任思远
+- [WriteBatch](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/WriteBatch%20-%202018-10-01%20-%20rsy.md)：任思远
   - `include/leveldb/write_batch.h`, `db/write_batch.cc`
   - 总结：leveldb 内部的一个批量写的结构，在 leveldb 为了提高插入和删除的效率，在其插入过程中都采用了批量集合相邻的多个具有相同同步设置的写请求以批量的方式进行写入。`WriteBatch` 是一个连续字节流的表示，是将所有的请求序列化称为连续的字节流
 
