@@ -12,20 +12,24 @@
 &nbsp;   
 <a id="module_info"></a>
 ## 模块信息
-ParsedInternalKey(db/dbformat.h,db/dbformat.cc)&nbsp; 
-InternalKey(db/dbformat.h,db/dbformat.cc)&nbsp; 
-LookupKey(db/dbformat.h,db/dbformat.cc)&nbsp; 
+ParsedInternalKey(db/dbformat.h,db/dbformat.cc)
+&nbsp; 
+InternalKey(db/dbformat.h,db/dbformat.cc)
+&nbsp; 
+LookupKey(db/dbformat.h,db/dbformat.cc)
 
 &nbsp;   
 <a id="module_in_brief"></a>
 ## 模块概要
-1.ParsedInternalKey是db内部操作的key。&nbsp; 
-2.InternalKeydb内部，包装易用的结构，包含userkey与SequnceNumber/ValueType。&nbsp; 
+1.ParsedInternalKey是db内部操作的key。
+&nbsp; 
+2.InternalKeydb内部，包装易用的结构，包含userkey与SequnceNumber/ValueType。
+&nbsp; 
 3.LookupKey是db内部在为查找memtable/sstable方便，包装使用的key结构，保存有userkey与SequnceNumber/ValueType dump 在内存的数据。
 &nbsp;   
 <a id="module_function"></a>
 ## 模块功能
-![Image text]( read_and_analyse_levelDB/architecture/DB/assets/InternalKey_10_01.png)
+![Image read_and_analyse_levelDB/architecture/DB/assets/InternalKey_10_01.png]
 
 
 &nbsp;   
