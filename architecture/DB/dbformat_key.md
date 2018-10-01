@@ -45,11 +45,13 @@ ValueType type;
  
 ![](assets/InternalKey_10_01.png)
 
-class InternalKey 是一个只存储了一个 string，它使用一个 DecodeFrom() 函数将 Slice 类型的 InternalKey 解码出 string 类型的 InternalKey.   
+class InternalKey 是一个只存储了一个 string，它使用一个 DecodeFrom() 函数将 Slice 类型的 InternalKey 解码出 string 类型的 InternalKey。  
 
 void DecodeFrom(const Slice& s) { rep_.assign(s.data(), s.size()); } 
  
-也就是说 InternalKey 是由 User_key.data + SequenceNumber + ValueType组合而成的
+也就是说 InternalKey 是由 User_key.data + SequenceNumber + ValueType组合而成的。
+
+InternalKey 的格式为： | User_key.data (string)| sequence number (7 B) | value type (1 B) | 
 
 ![](assets/LookupKey_10_01.png)
 
