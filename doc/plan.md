@@ -83,11 +83,11 @@
   - `util/comparator.cc`, `include/leveldb/comparator.h`, `db/dbformat.h`, `db/dbformat.cc`
   - 指导：`Comparator` 下主要有两种实现：`BytewiseComparatorImpl`, `InternalKeyComparator`，区分两者的 **功能**，以及 **分别在什么情况下使用**
   - 总结：
-- [ParsedInternalKey, InternalKey, LookupKey]()：苏胜
-  - `db/dbformat.h`, `db/dbformat.cc`, 文档名叫 "dbformat_key.md", 文档放置于 "DB" 文件夹下
+- [ParsedInternalKey, InternalKey, LookupKey](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/dbformat_key-2018-10-01-ss.md)：苏胜
+  - `db/dbformat.h`, `db/dbformat.cc`, 文档名叫 "dbformat_key - 2018-10-01 - ssh.md", 文档放置于 "DB" 文件夹下
   - 指导：db 内部包装的 key 结构，需要阐释清楚 **具体结构**，**含义**，**用途** 以及 **依赖于key的操作**
   - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
-  - 总结：
+  - 总结：对 key 的包装，内含 `user_key`, `SequenceNumber`, `ValueType`
 - [Slice](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Slice%20-%202018-09-16%20-%20rsy.md)：任思远
   - `include/leveldb/slice.h`
   - 总结：为操作数据的方便，将数据和长度包装成 Slice 使用，直接操控指针避免不必要的数据拷贝。就是个简易的 **`string`**
