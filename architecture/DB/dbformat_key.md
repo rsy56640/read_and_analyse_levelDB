@@ -55,6 +55,15 @@ InternalKey 的格式为： | User_key.data (string)| sequence number (7 B) | va
 
 ![](assets/LookupKey_10_01.png)
 
+Memtable 的查询接口传入的是 LookupKey（class LookupKey），它也是由 User Key 和 Sequence Number 组合而成的，
+
+从其构造函数：LookupKey(const Slice& user_key, SequenceNumber s)中分析出 LookupKey 的格式为： 
+
+| Size (Varint32)| User key (string) | sequence number (7 bytes) | value type (1 byte) | 
+
+两点： 1.这里的 Size 是 user key 长度+8，相当于 InteralKey 的长度；value type 是 kValueTypeForSeek，它等于 kTypeValue。
+
+2.由于 LookupKey 的 size 是变长存储的，因此它使用 kstart_记录了 user key string的起始地址，否 则将不能正确的获取 size 和 user key； 
 
 &nbsp;   
 <a id="interface_specification"></a>
