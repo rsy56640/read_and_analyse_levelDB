@@ -48,8 +48,6 @@
 - [SSTable and Log Structured Storage: LevelDB](https://www.igvita.com/2012/02/06/sstable-and-log-structured-storage-leveldb/)
 - [LevelDB之源码探析小结](http://zouzls.github.io/2016/12/06/LevelDB%E4%B9%8B%E6%BA%90%E7%A0%81%E6%8E%A2%E6%9E%90%E5%B0%8F%E7%BB%93/)
 - [LevelDB之LSM-Tree](http://zouzls.github.io/2016/11/23/LevelDB%E4%B9%8BLSM-Tree/)
-- [大数据索引技术 - B+ tree vs LSM tree](https://www.cnblogs.com/fxjwind/archive/2012/06/09/2543357.html)
-- [数据库如何抵抗随机IO：问题、方法与现实](http://wangyuanzju.blog.163.com/blog/static/13029201132154010987)
 - [详解SSTable结构和LSMTree索引](http://www.cnblogs.com/fxjwind/archive/2012/08/14/2638371.html)
 - [Log Structured Merge Trees译文以及LSM调研心得](http://weakyon.com/2015/04/08/Log-Structured-Merge-Trees.html)
 - [LevelDb日知录 - 全](https://blog.csdn.net/elton_xiao/article/details/52556851)
@@ -68,6 +66,21 @@
 
 &nbsp;   
 &nbsp;   
+
+
+
+B+ & LSM：
+
+- [（转）B+树 LSM 树 COLA树 原理及在海量存储中的应用](https://blog.csdn.net/anderscloud/article/details/7181085)
+- [大数据索引技术 - B+ tree vs LSM tree](https://www.cnblogs.com/fxjwind/archive/2012/06/09/2543357.html)
+- [数据库如何抵抗随机IO：问题、方法与现实](http://wangyuanzju.blog.163.com/blog/static/13029201132154010987)
+- []()
+
+
+
+&nbsp;   
+&nbsp;   
+
 
 
 其他：

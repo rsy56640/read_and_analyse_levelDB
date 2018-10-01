@@ -24,10 +24,10 @@ Coding 主要是用来完成变长数据以及字符串还有Slice的序列化�
 - PutFixed64 写入定长uint64
 - PutVarint32 写入变长uint32
 - PutVarint64 写入变长uint64
-- PutLengthPrefixedSlice 后面解释.
-- GetVarint32 读取变长uint32
-- GetVarint64 读取变长uint64
-- GetLengthPrefixedSlice 后面解释.
+- PutLengthPrefixedSlice 加入长度前置的slice，即先加长度，再加string.
+- GetVarint32 读取变长uint32，并删掉这个数字。
+- GetVarint64 读取变长uint64，并删掉这个数字。
+- GetLengthPrefixedSlice 读取数字后的数据到 result，并删掉 input开头的数字。（数据格式：`len(varint32), data[len](uint8)`）
 - GetVarint32Ptr(p,limit,v) 将[p,limit)部分的内存解析为变长uint32放到v里面,返回下一个字节
 - GetVarint64Ptr(p,limit,v) 将[p,limit)部分的内存解析为变长uint64放到v里面,返回下一个字节
 - VarintLength 变长uint32/uint64长度
