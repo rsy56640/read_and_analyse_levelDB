@@ -31,6 +31,7 @@ LookupKey(db/dbformat.h,db/dbformat.cc)
 ## 模块功能
 ![](assets/InternalKey_10_01.png)
 
+![](assets/LookupKey_10_01.png)
 
 &nbsp;   
 <a id="interface_specification"></a>
