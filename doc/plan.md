@@ -158,18 +158,18 @@
 - [FilterPolicy](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/FilterPolicy%20-%202018-10-03%20-%20rsy.md)：任思远
   - `include/leveldb/filter_policy.h`
   - 总结：上层用于查找 key，跳过一定没有出现 key 的 sstable
-- [FilterBolck]()：任思远
+- [FilterBolck](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/FilterBlock%20-%202018-10-03%20-%20rsy.md)：任思远
   - `table/filter_block.h`, `table/filter_block.cc`
   - 总结：`filter block` 就是 `meta block`，用来存储一些过滤器相关的数据。把要输出的结果按照想要的格式整理好，在内存中放置好。之后由 `log_writer` 写入文件(`BlockBuilder` 同理)。并且提供 `Reader` 来查找可能存在的 `key`
 - [Block](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Block%20-%202018-10-02%20-%20rsy.md)：任思远
   - `table/block.h`, `table/block.cc`, `table/block_builder.h`, `table/block_builder.cc`
   - 总结：存储数据，通过 `BlockHandle` 获取 `Block`（offset 和 size），并封装了 `Block::Iter` 用于上层调用，由 `BlockBuilder` 创建
-- [TwolevelIterator]()：任思远
-  - `table/two_level_iterator.h`, `table/two_level_iterator.cc`
-  - 总结：
-- [Iterator_Wrapper]()：任思远
+- [IteratorWrapper](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Iterator_Wrapper%20-%202018-10-03%20-%20rsy.md)：任思远
   - `table/iterator_wrapper.h`
   - 总结：缓存了 `valid`, `key`，并管理 iter 资源
+- [TwolevelIterator]()：任思远
+  - `table/two_level_iterator.h`, `table/two_level_iterator.cc`
+  - 总结：将对 `Table` 的遍历封装，对外展现如同线性遍历。
 - [Builder]()：任思远
   - `db/builder.h`, `db/builder.cc`
   - 总结：
