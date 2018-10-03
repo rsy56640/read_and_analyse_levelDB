@@ -46,6 +46,7 @@
 全组成员安装 understand 源码阅读软件，阅读 [文档格式说明](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E.md)    
 阅读 [参考资料](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/README.md)，了解 `leveldb` 的大概结构。   
 
+
 &nbsp;   
 ### 09-22 ~ 09-24
 
@@ -113,6 +114,7 @@
 - ![](https://img.shields.io/badge/leveldb--table-1%25-lightgrey.svg) ![](https://img.shields.io/badge/leveldb--util-30%25-yellow.svg)
 
 
+
 &nbsp;   
 ### 10-03 ~ 10-09 第六周（演讲: 10-10）
 
@@ -165,10 +167,17 @@
 - [TwolevelIterator]()：任思远
   - `table/two_level_iterator.h`, `table/two_level_iterator.cc`
   - 总结：
+- [Iterator_Wrapper]()：任思远
+  - `table/iterator_wrapper.h`
+  - 总结：缓存了 `valid`, `key`，并管理 iter 资源
+- [Builder]()：任思远
+  - `db/builder.h`, `db/builder.cc`
+  - 总结：
 - [Table]()：任思远
   - `include/leveldb/table.h`, `table/table.cc`, `table/table_builder.cc`, `include/leveldb/table_builder.h`
   - 总结：
-- ![](https://img.shields.io/badge/leveldb--table-70%25-orange.svg) ![](https://img.shields.io/badge/leveldb--util-70%25-ff69b4.svg)
+- ![](https://img.shields.io/badge/leveldb--db-20%25-blue.svg) ![](https://img.shields.io/badge/leveldb--table-70%25-orange.svg) ![](https://img.shields.io/badge/leveldb--util-70%25-ff69b4.svg)
+
 
 
 &nbsp;   
