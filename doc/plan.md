@@ -167,14 +167,17 @@
 - [IteratorWrapper](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Iterator_Wrapper%20-%202018-10-03%20-%20rsy.md)：任思远
   - `table/iterator_wrapper.h`
   - 总结：缓存了 `valid`, `key`，并管理 iter 资源
-- [TwolevelIterator]()：任思远
+- [TwolevelIterator](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/TwoLevelIterator%20-%202018-10-03%20-%20rsy.md)：任思远
   - `table/two_level_iterator.h`, `table/two_level_iterator.cc`
   - 总结：将对 `Table` 的遍历封装，对外展现如同线性遍历。
 - [Builder]()：任思远
   - `db/builder.h`, `db/builder.cc`
-  - 总结：
+  - 总结：`BuildTable()`：为 level-0 创建 `Table`，并把 metadata 存到 `FileMetaData* meta`
 - [Table]()：任思远
   - `include/leveldb/table.h`, `table/table.cc`, `table/table_builder.cc`, `include/leveldb/table_builder.h`
+  - 总结：
+- [memtable]()：任思远
+  - `db/memtable.h`, `db/memtable.cc`
   - 总结：
 - ![](https://img.shields.io/badge/leveldb--db-20%25-blue.svg) ![](https://img.shields.io/badge/leveldb--table-70%25-orange.svg) ![](https://img.shields.io/badge/leveldb--util-70%25-ff69b4.svg)
 
