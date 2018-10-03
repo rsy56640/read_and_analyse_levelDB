@@ -110,7 +110,7 @@
 - [WriteBatch](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/WriteBatch%20-%202018-10-01%20-%20rsy.md)：任思远
   - `include/leveldb/write_batch.h`, `db/write_batch.cc`
   - 总结：leveldb 内部的一个批量写的结构，在 leveldb 为了提高插入和删除的效率，在其插入过程中都采用了批量集合相邻的多个具有相同同步设置的写请求以批量的方式进行写入。`WriteBatch` 是一个连续字节流的表示，是将所有的请求序列化称为连续的字节流
-
+- ![](https://img.shields.io/badge/leveldb--table-1%25-lightgrey.svg) ![](https://img.shields.io/badge/leveldb--util-30%25-yellow.svg)
 
 
 &nbsp;   
@@ -153,18 +153,22 @@
       - `BlockHandle` 封装了 `Block` 的元信息（位于 sstable 的 offset/size）
       -  `Footer` 用来存储 `meta index block` 与 `index block` 在 sstable 中的索引信息，另外尾部还会存储一个 `magic word`。落盘和读取时会调用相关接口
       - `ReadBlock()` 从随机文件里面读取 `Block` 出来，对于这个 `Block` 的位置的话由 `handle` 提供（注意每个 `Block` 后面还有 `crc` 和 `type`）
-- [FilterPolicy]()：任思远
+- [FilterPolicy](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/FilterPolicy%20-%202018-10-03%20-%20rsy.md)：任思远
   - `include/leveldb/filter_policy.h`
   - 总结：上层用于查找 key，跳过一定没有出现 key 的 sstable
 - [FilterBolck]()：任思远
   - `table/filter_block.h`, `table/filter_block.cc`
-  - 总结：
+  - 总结：`filter block` 就是 `meta block`，用来存储一些过滤器相关的数据。把要输出的结果按照想要的格式整理好，在内存中放置好。之后由 `log_writer` 写入文件(`BlockBuilder` 同理)。并且提供 `Reader` 来查找可能存在的 `key`
 - [Block](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Block%20-%202018-10-02%20-%20rsy.md)：任思远
   - `table/block.h`, `table/block.cc`, `table/block_builder.h`, `table/block_builder.cc`
-  - 总结：存储数据，通过 `BlockHandle` 获取 `Block`（offset 和 size），并封装了 `Block::Iter` 用于上层调用，由创建 `BlockBuilder` 创建
+  - 总结：存储数据，通过 `BlockHandle` 获取 `Block`（offset 和 size），并封装了 `Block::Iter` 用于上层调用，由 `BlockBuilder` 创建
+- [TwolevelIterator]()：任思远
+  - `table/two_level_iterator.h`, `table/two_level_iterator.cc`
+  - 总结：
 - [Table]()：任思远
   - `include/leveldb/table.h`, `table/table.cc`, `table/table_builder.cc`, `include/leveldb/table_builder.h`
   - 总结：
+- ![](https://img.shields.io/badge/leveldb--table-70%25-orange.svg) ![](https://img.shields.io/badge/leveldb--util-70%25-ff69b4.svg)
 
 
 &nbsp;   

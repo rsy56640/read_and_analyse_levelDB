@@ -10,7 +10,7 @@
 &nbsp;   
 <a id="FilterBlock"></a>
 ## [FilterBlock]()
-
+![](assets/FilterBlock_structure_10_03.png)
 
 
 
