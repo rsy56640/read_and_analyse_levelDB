@@ -31,8 +31,8 @@
 
 - [总体架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E8%BD%AF%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
   - [数据库逻辑架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/README.md)
-  - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md) ![](https://img.shields.io/badge/leveldb--table-1%25-lightgrey.svg)
-  - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md) ![](https://img.shields.io/badge/leveldb--util-30%25-yellow.svg)
+  - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md) ![](https://img.shields.io/badge/leveldb--table-30%25-yellow.svg)
+  - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md) ![](https://img.shields.io/badge/leveldb--util-50%25-blue.svg)
   - [其他：平台相关-锁-信号-原子-压缩](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/%E5%B9%B3%E5%8F%B0%E7%9B%B8%E5%85%B3-%E9%94%81-%E4%BF%A1%E5%8F%B7-%E5%8E%9F%E5%AD%90-%E5%8E%8B%E7%BC%A9/README.md) 
 
 -----
@@ -147,7 +147,7 @@
       - [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
       - [LevelDB源码解析11.文件序号](https://zhuanlan.zhihu.com/p/35343043)
   - 总结：
-- [BlockHandle, Footer]()：任思远
+- [BlockHandle, Footer](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/BlockHandle%26Footer%20-%202018-10-03%20-%20rsy.md)：任思远
   - `table/format.h`, `table/format.cc`
   - 总结：
       - `BlockHandle` 封装了 `Block` 的元信息（位于 sstable 的 offset/size）
@@ -155,7 +155,7 @@
       - `ReadBlock()` 从随机文件里面读取 `Block` 出来，对于这个 `Block` 的位置的话由 `handle` 提供（注意每个 `Block` 后面还有 `crc` 和 `type`）
 - [FilterPolicy]()：任思远
   - `include/leveldb/filter_policy.h`
-  - 总结：
+  - 总结：上层用于查找 key，跳过一定没有出现 key 的 sstable
 - [FilterBolck]()：任思远
   - `table/filter_block.h`, `table/filter_block.cc`
   - 总结：
