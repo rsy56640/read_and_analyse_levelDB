@@ -118,18 +118,18 @@
 
 这周看一些有趣的构件。
 
-- [BloomFilter]()
+- [BloomFilter]()：毛凯
   - `util/bloom.cc`
   - 指导：布隆过滤器的**效果**，**缺点** 以及 **何时刷新**（我猜的，可能不）
   - 可参考：
       - [BloomFilter - 基本理论](https://www.jianshu.com/p/181f40047834)
       - [布隆过滤器的原理和实现](https://github.com/cpselvis/zhihu-crawler/wiki/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0)
   - 总结：
-- [Logging]()
+- [Logging]()：季宇恒
   - `util/logging.h`, `util/logging.cc`
   - 可参考：
   - 总结：
-- [skiplist]()
+- [skiplist]()：苏胜
   - `db/skiplist.h`, 放置于 `util/memtable` 文件夹下，这个给 **2周** 时间来看
   - 指导：跳表是工程中常见的数据结构，用于快速的kv查找，优点是比各种 BST（AVL，红黑树）易于实现，而且效率也高。主要思想是：如何在链表中维护 “某种结构” 以获得类似二分查找的性质
   - 可参考：
@@ -138,7 +138,7 @@
       - [leveldb](https://www.cnblogs.com/xueqiuqiu/tag/leveldb/)
       - [深夜学算法之SkipList：让链表飞](https://www.jianshu.com/p/fcd18946994e)
       - [leveldb(五)：SkipList跳表](https://blog.csdn.net/weixin_36145588/article/details/76393448)
-- [FileNumber, FileName]()：
+- [FileNumber, FileName]()：杜致
   - `db/filename.h`, `db/filename.cc`, `db/dbformat.h`
   - 指导：
       - db 创建文件时会按照规则将 `FileNumber` 加上特定后缀作为文件名。 所以， 运行时只需要记录 `FileNumber`（uint64_t)即可定位到具体的文件路径，省掉了字符串的麻烦。 `FileNumber` 在 db 中全局递增
@@ -147,22 +147,24 @@
       - [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
       - [LevelDB源码解析11.文件序号](https://zhuanlan.zhihu.com/p/35343043)
   - 总结：
-- [Table]()：任思远
-  - `include/leveldb/table.h`, `table/table.cc`, `table/table_builder.cc`, `include/leveldb/table_builder.h`
-  - 总结：
-- [Block]()：任思远
-  - `table/block.h`, `table/block.cc`, `table/block_builder.h`, `table/block_builder.cc`
-  - 总结：存储数据，通过 `BlockHandle` 获取 `Block`（offset 和 size），并封装了 `Block::Iter` 用于上层调用。由创建 `BlockBuilder` 创建
 - [BlockHandle, Footer]()：任思远
   - `table/format.h`, `table/format.cc`
   - 总结：
+      - `BlockHandle` 封装了 `Block` 的元信息（位于 sstable 的 offset/size）
+      -  `Footer` 用来存储 `meta index block` 与 `index block` 在 sstable 中的索引信息，另外尾部还会存储一个 `magic word`。落盘和读取时会调用相关接口
+      - `ReadBlock()` 从随机文件里面读取 `Block` 出来，对于这个 `Block` 的位置的话由 `handle` 提供（注意每个 `Block` 后面还有 `crc` 和 `type`）
 - [FilterPolicy]()：任思远
   - `include/leveldb/filter_policy.h`
-  - 指导：
-  - 可参考：
-      - []()
   - 总结：
-
+- [FilterBolck]()：任思远
+  - `table/filter_block.h`, `table/filter_block.cc`
+  - 总结：
+- [Block](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Block%20-%202018-10-02%20-%20rsy.md)：任思远
+  - `table/block.h`, `table/block.cc`, `table/block_builder.h`, `table/block_builder.cc`
+  - 总结：存储数据，通过 `BlockHandle` 获取 `Block`（offset 和 size），并封装了 `Block::Iter` 用于上层调用，由创建 `BlockBuilder` 创建
+- [Table]()：任思远
+  - `include/leveldb/table.h`, `table/table.cc`, `table/table_builder.cc`, `include/leveldb/table_builder.h`
+  - 总结：
 
 
 &nbsp;   
