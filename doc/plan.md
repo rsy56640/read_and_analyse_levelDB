@@ -173,7 +173,7 @@
 - [Builder](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Builder%20-%202018-10-03%20-%20rsy.md)：任思远
   - `db/builder.h`, `db/builder.cc`
   - 总结：`BuildTable()`：为 level-0 创建 `Table`，并把 metadata 存到 `FileMetaData* meta`
-- [Memtable]()：任思远
+- [Memtable](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Memtable%20-%202018-10-04%20-%20rsy.md)：任思远
   - `db/memtable.h`, `db/memtable.cc`
   - 总结：存储 k-v 插入、删除的操作（并不真正删除，只打标记）并且将数据序列化，在写 level-0 时将 `iter` 传入 `BuildTable` 写入文件
 - [Table]()：任思远
