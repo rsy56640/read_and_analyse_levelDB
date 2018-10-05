@@ -183,7 +183,7 @@
       - `TableBuilder` 类用于构建 sstable，将 `data block`, `filter block`, `meta index block`,  `index block`, `footer` 写入文件
 - [Merge]()：任思远
   - `table/merge.h`, `table/merge.cc`
-  - 总结：
+  - 总结：多路 Iterator 归并称为一个 Iterator 进行遍历，用于 `DBImpl::NewInternalIterator()` 中收集所有 iterator（memtable, imm memtable, sstable）然后统一处理
 - [Compaction]()：任思远
   - `db/version_set.h`, `db/version_set.cc`
   - 总结：
