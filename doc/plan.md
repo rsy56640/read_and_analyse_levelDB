@@ -30,9 +30,9 @@
 **软件体系架构恢复**：（即本学期课程目标）
 
 - [总体架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/doc/%E8%BD%AF%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
-  - [数据库逻辑架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/README.md) ![](https://img.shields.io/badge/leveldb--db-20%25-orange.svg)
-  - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md) ![](https://img.shields.io/badge/leveldb--table-30%25-yellow.svg)
-  - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md) ![](https://img.shields.io/badge/leveldb--util-50%25-blue.svg)
+  - [数据库逻辑架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/README.md) ![](https://img.shields.io/badge/leveldb--db-25%25-orange.svg)
+  - [底层存储架构](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/README.md) ![](https://img.shields.io/badge/leveldb--table-70%25-yellow.svg)
+  - [基础工具库](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/util/README.md) ![](https://img.shields.io/badge/leveldb--util-70%25-blue.svg)
   - [其他：平台相关-锁-信号-原子-压缩](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/%E5%B9%B3%E5%8F%B0%E7%9B%B8%E5%85%B3-%E9%94%81-%E4%BF%A1%E5%8F%B7-%E5%8E%9F%E5%AD%90-%E5%8E%8B%E7%BC%A9/README.md) 
 
 -----
@@ -181,12 +181,14 @@
   - 总结：
       - `Table` 类主要完成 sstable 的读取逻辑
       - `TableBuilder` 类用于构建 sstable，将 `data block`, `filter block`, `meta index block`,  `index block`, `footer` 写入文件
-- [Merge]()：任思远
+- [Merge](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/MergingIterator%20-%202018-10-05%20-%20rsy.md)：任思远
   - `table/merge.h`, `table/merge.cc`
   - 总结：多路 Iterator 归并称为一个 Iterator 进行遍历，用于 `DBImpl::NewInternalIterator()` 中收集所有 iterator（memtable, imm memtable, sstable）然后统一处理
 - [Compaction]()：任思远
   - `db/version_set.h`, `db/version_set.cc`
-  - 总结：
+  - 总结：compaction 是执行 LSM-tree 中 merge 的过程
+      - minor compaction 用于内存到外存的迁移过程
+      - major compaction 用于 level 之间的迁移
 - [LSM]()：任思远
   - ``
   - 总结：

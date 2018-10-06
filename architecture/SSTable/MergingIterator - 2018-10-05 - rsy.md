@@ -55,7 +55,7 @@
 `MergingIterator` 直接托管了资源。
 
 - `MergingIterator::Seek()`：每个 iterator 都 seek，然后调用 `FindSmallest()`
-- `MergingIterator::Next()`：`current_` 前进一步，然后调用 `FindSmallest()`
+- `MergingIterator::Next()`：首先调整其他 iterator 都比 `current_` 大，然后 `current_` 前进一步，再调用 `FindSmallest()`
 - `MergingIterator::Prev()`：同上
 - `MergingIterator::FindSmallest()`：设置 `current_` 为当前所有 iterator 中值最小的那个
 - `MergingIterator::FindLargest()`：同上
