@@ -41,6 +41,17 @@
 >然后看看进行一个 key 的 query 是如何进行的。首先读取出 data index block（这个部分可以常驻内存），得到里面的 restart point 部分。针对 restart point 进行二分。因为 restart point 指向的 key 都是全量的 key。如果确定在某两个 restart point 之间之后，就可以遍历这个 restart point 之间范围分析 seperator。得到想要查找的 seperator 之后对应的 value 就是某个 data block offset。读取这个 data block 和之前的方法一样就可以查找 key 了。对于遍历来说，过程是一样的。   
 >这里我们稍微分析一下这样的工作方式的优缺点。对于写或者是 merge 来说的话，效率相当的高，所有写都是顺序写并且还可以进行压缩。影响写效率的话一个重要参数就是 flush block 的参数。 但是对于读来说的话，个人觉得过程有点麻烦，但是可以实现得高效率。对于 flush block 调节会影响到 data index block 和 data block 占用内存大小。如果 flush block 过大的话， 那么会造成 data index block 耗费内存小，但是每次读取出一个 data block 内存很大。如果 flush block 过小的话，那么 data index block 耗费内存很大，但是每次读取 data block 内存很小。 而 restart point 数量会影响过多的话，那么可能会占用稍微大一些的内存空间，但是会使得查找过程更快（遍历数更少）。   
 
+### SSTable 的访问
+![](assets/SSTable_access_10_07.jpg)
+
+
+### SSTable 的建立
+![](assets/SSTable_build_10_07.jpg)
+
+
+### SSTable 的内部格式
+![](assets/SSTable_format_10_07.jpg)
+
 
 &nbsp;   
 <a id="MergingIterator"></a>
@@ -113,7 +124,7 @@ B树在插入的时候，如果是最后一个node,那么速度非常快，因�
 
 文件是不可修改的，他们永远不会被更新，新的更新操作只会写到新的文件中。通过周期性的合并这些文件来减少文件个数。   
 
-但是读操作会变的越来越慢随着 sstable 的个数增加，因为每一个 sstable 都要被检查。最基本的的方法就是页缓存（也就是 leveldb 的 TableCache，将 sstable 按照 LRU 缓存在内存中）在内存中，减少二分查找的消耗。即使有每个文件的索引，随着文件个数增多，读操作仍然很慢。通过周期的合并文件，来保持文件的个数，因些读操作的性能在可接收的范围内。即便有了合 并操作，读操作仍然会访问大量的文件，大部分的实现通过布隆过滤器来避免大量的读文件操作，布隆过滤器是一种高效的方法来判断一个 sstable 中是否包 含一个特定的 key。
+但是读操作会变的越来越慢随着 sstable 的个数增加，因为每一个 sstable 都要被检查。最基本的的方法就是页缓存（也就是 leveldb 的 TableCache，将 sstable 按照 LRU 缓存在内存中）在内存中，减少二分查找的消耗。即使有每个文件的索引，随着文件个数增多，读操作仍然很慢。通过周期的合并文件，来保持文件的个数，因此读操作的性能在可接收的范围内。即便有了合 并操作，读操作仍然会访问大量的文件，大部分的实现通过布隆过滤器来避免大量的读文件操作，布隆过滤器是一种高效的方法来判断一个 sstable 中是否包 含一个特定的 key。
 
 我们交换了读和写的随机 I/O。这种折衷很有意义，我们可以通过软件实现的技巧像布隆过滤器或者硬件（大文件 cache）来优化读性能。
 

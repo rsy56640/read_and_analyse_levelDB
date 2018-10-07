@@ -32,6 +32,8 @@
 
 ![](assets/Memtable_UML_10_04.png)
 
+![](assets/memtable_10_07.jpg)
+
 
 &nbsp;   
 <a id="interface_specification"></a>
