@@ -3,8 +3,10 @@
 - [Block](#Block)
 - [Table](#Table)
 - [MergingIterator](#MergingIterator)
-- []()
-- []()
+- [TwoLevelIterator](#TwoLevelIterator)
+- [Filter(meta) Block](#filter_block)
+- [Compaction](#Compaction)
+- [LSM](#LSM)
 
 
 &nbsp;   
@@ -52,6 +54,74 @@
 
 
 &nbsp;   
+<a id="TwoLevelIterator"></a>
+## [TwoLevelIterator](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/TwoLevelIterator%20-%202018-10-03%20-%20rsy.md)
+
+将对 Table 的遍历封装，对外展现如同线性遍历。
+
+
+&nbsp;   
+<a id="filter_block"></a>
+## [Filter(meta) Block](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/FilterBlock%20-%202018-10-03%20-%20rsy.md)
+
+**`filter block` 就是 `meta block`。**    
+`filter block` 存储的是 `data block` 数据的一些过滤信息，用于加快查询的速度。
+
+![](assets/Filter_Block_structure_10_03.png)
+
+
+&nbsp;   
+<a id="Compaction"></a>
+## [Compaction](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Compaction%20-%202018-10-05%20-%20rsy.md)
+
+- LevelDB 存储分为两部分，一部分在内存，另一部分在磁盘上。内存中方便快速查找， 查找失败后，去磁盘上查找。一段时间后或内存达到一定大小，会将内存中的 compact 成 .sst 文件存在磁盘
+- compaction 是执行 LSM-tree 中 merge 的过程
+- 删除操作在 memtable 只是打上删除标记，**真正的删除** 在 compaction 中做
+- **minor compaction** 用于内存到外存的迁移过程。level-0 是将 memTable 整个 dump 出来的结果，因此可能之间有相交，这个操作叫 minor compaction
+- **major compaction** 用于 level 之间的迁移。major compaction 是将 层i 合到 层i+1 中去，合并是将 层i 中的一块合到整个 层i+1 中去， 这个过程类似归并排序，将参与的几个块全部取出来排序，再重新组合成新的 层i+1，同时 会将重复的 key 弃掉（弃掉是指如果 key 已经出现在更低的层，则高级的层不需要记录这个 key）
+  - 对 level > 0 的 sstables，选择其中一个 sstable 与 下一层 sstables 做合并
+  - 对 level-0 的 sstables，在选择一个 sstable 后，还需要找出所有与这个 sstable 有 key 范围重叠的 sstables，最后统统与 level-1 的 sstables 做合并
+
+### Minor Compation
+
+![](assets/Minor_Compaction_10_05.png) 
+
+### Major Compaction
+
+![](assets/Major_Compaction_10_05.png)
+
+
+&nbsp;   
+<a id="LSM"></a>
+## [LSM]()
+
+![](assets/LSM_Btree_sequential_insert_10_06.png)
+
+B树在插入的时候，如果是最后一个node,那么速度非常快，因为是顺序写。
+
+![](assets/LSM_Btree_random_insert_10_06.png)
+
+但如果有更新插入删除等综合写入，最后因为需要循环利用磁盘块，所以会出现较多的随机I/O。大量时间消耗在磁盘寻道时间上。
+
+![](assets/LSM_Btree_ranged_query_10_06.png)
+
+将 随机写 改为 顺序写，大大提高了 I/O 速度。   
+核心思想是：
+
+- 对变更进行批量 & 延时处理
+- 通过归并排序将更新迁移到硬盘上
+
+文件是不可修改的，他们永远不会被更新，新的更新操作只会写到新的文件中。通过周期性的合并这些文件来减少文件个数。   
+
+但是读操作会变的越来越慢随着 sstable 的个数增加，因为每一个 sstable 都要被检查。最基本的的方法就是页缓存（也就是 leveldb 的 TableCache，将 sstable 按照 LRU 缓存在内存中）在内存中，减少二分查找的消耗。即使有每个文件的索引，随着文件个数增多，读操作仍然很慢。通过周期的合并文件，来保持文件的个数，因些读操作的性能在可接收的范围内。即便有了合 并操作，读操作仍然会访问大量的文件，大部分的实现通过布隆过滤器来避免大量的读文件操作，布隆过滤器是一种高效的方法来判断一个 sstable 中是否包 含一个特定的 key。
+
+我们交换了读和写的随机 I/O。这种折衷很有意义，我们可以通过软件实现的技巧像布隆过滤器或者硬件（大文件 cache）来优化读性能。
+
+
+&nbsp;   
 <a id=""></a>
 ## []()
+
+
+
 

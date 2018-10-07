@@ -184,14 +184,13 @@
 - [Merge](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/MergingIterator%20-%202018-10-05%20-%20rsy.md)：任思远
   - `table/merge.h`, `table/merge.cc`
   - 总结：多路 Iterator 归并称为一个 Iterator 进行遍历，用于 `DBImpl::NewInternalIterator()` 中收集所有 iterator（memtable, imm memtable, sstable）然后统一处理
-- [Compaction]()：任思远
+- [Compaction](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Compaction%20-%202018-10-05%20-%20rsy.md)：任思远
   - `db/version_set.h`, `db/version_set.cc`
   - 总结：compaction 是执行 LSM-tree 中 merge 的过程
       - minor compaction 用于内存到外存的迁移过程
       - major compaction 用于 level 之间的迁移
 - [LSM]()：任思远
-  - ``
-  - 总结：
+  - 总结：放弃磁盘读性能来换取写的顺序性
 - ![](https://img.shields.io/badge/leveldb--db-25%25-blue.svg) ![](https://img.shields.io/badge/leveldb--table-70%25-orange.svg) ![](https://img.shields.io/badge/leveldb--util-70%25-ff69b4.svg)
 
 
