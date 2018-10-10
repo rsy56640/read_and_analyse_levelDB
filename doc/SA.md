@@ -120,6 +120,33 @@ Discussion group for LevelDB. LevelDB is a open source library that implements a
 <a id="Functional_View"></a>
 ## 4. Functional View
 
+LevelDb is the two great spirit level engineers is an open-source project, in short, LevelDb is capable of processing one billion scale Key-Value persistent data storage C++ Library. As described above, the two is the design and implementation of Bigtable, if the understanding of Bigtable, should know that there are two core in distributed storage system, the influence of part: Master Server and Tablet Server. The Master Server store data management and distributed scheduling, the distributed data storage and read and write operation is completed by the Tablet Server, and LevelDb can be understood as a simplified version of the Tablet Server.
+
+LevelDb has the following advantages:
+
+- First of all, LevelDb is a k-v system for persistent storage, k-v system and Redis this type of memory is different, LevelDb doesn't like Redis eat memory, but most of the data stored to disk.
+- Secondly, LevleDb when storing data, is based on the records of key value orderly storage, is adjacent to the key value in the storage file is stored in sequence, and the application can customize the key size comparison function, LevleDb will be in accordance with the comparison of user defined function sequentially stored the records.
+- Again, like most k-v systems, the operation interface of LevelDb is very simple, basic operation including written records, delete records recording and reading. Support for multiple operating atomic batch operation.
+- In addition, LevelDb supports data snapshot (snapshot) function, the read operation is not affected by the write operation, can always see consistent data in the reading process.
+- In addition, LevelDb also supports data compression to reduce the operation, the storage space and increase IO efficiency have direct help.
+
+
+### Fast Storage
+
+LevelDb performance is very outstanding, the official website of the random write performance up to 400000 records per second, while the random read performance up to 60000 records per second. In general, the write operation of LevelDb is much faster than the read operation, and the sequential read operation is much faster than random read and write operations. Why is this, see our follow-up to the introduction of LevelDb Gu Yanwu, estimated that you will understand the intrinsic reason.
+
+
+
+### Snapshot
+
+![](https://img.shields.io/badge/SA-TODO-yellow.svg)
+
+
+
+
+### Recover
+
+![](https://img.shields.io/badge/SA-TODO-yellow.svg)
 
 
 
@@ -171,10 +198,33 @@ Below we have a look the specific physical and logical layout of the log file is
 
 ![](assets/SA_Logfile_10_09.jpg)
 
-
 ### Cache
 
+![](../architecture/util/LRU/assets/handle_table_09_24.png)
 
+![](../architecture/util/LRU/assets/SharededLRUCache_结构_09_24.png)
+
+This is the structure of the LRUCache, which is used in `TableCache` and `BlockCache`.
+
+A read operation if the record is not found in the memory of memtable, to multiple disk access operations. The optimal condition of hypothesis, Is the first in the new level file 0 found in this key, It is also necessary to read the 2 disk, Once the SSTable file in the index part is read into memory, The index can determine the key is stored in a block according to second times is read; the block content, And then look for the key in memory corresponding value.
+
+Two different Cache: Table Cache and Block Cache into levelDb. The Block Cache is configured in the optional, in the configuration file specifies whether to open this function.
+
+#### TableCache
+
+![](assets/SA_TableCache_10_10.jpg)
+
+The Figure is the structure of table cache. In Cache, The value of key is the SSTable file name, Value consists of two parts, One is the file pointer to the disk to open SSTable file, This is for the convenience of reading; another is Table structure pointer to the corresponding memory in the SSTable file, The table structure in memory, Save the index contents of SSTable and cache_id used to indicate block cache, of course, there are also some other content.
+
+For example, in the get (key) read operation, if levelDb key was determined in a level under a file A key range range, so need to judge Is it right? Really contains the k-v file A. At this time, levelDb will first look for Table Cache, see the file is in the cache, if found, then according to the index part can find which block contains the key. If the file is not found in the cache, then open the SSTable file, the index part is read into memory, and then insert the Cache inside, go to index positioning which block contains the Key . If the file which contains the key block, you need to read the block content, this is the second time to read.
+
+#### BlockCache
+
+![](assets/SA_BlockCache_10_10.jpg)
+
+Block Cache is to accelerate this process, the figure is a schematic diagram of the structure. Where key is the file cache_id and the block in the starting position in the file block_offset. Value is the Block content.
+
+If the levelDb finds the block in block cache, you can avoid reading data, block content in cache find key value on the line, if not found? Then read into the block and insert it in block cache. This is the levelDb by two cache to accelerate reading speed. From here we can see that, if the data locality read better, that is to say to read most of the data in cache can be read, then read the efficiency is very high, and if it is on the key sequential reads efficiency should also be good, because once after reading can be repeatedly reused. But if the random read, you can deduce that its efficiency.
 
 ### Memtable
 
@@ -185,7 +235,6 @@ This section describes the data structure of Memtable memory, an important posit
 LevelDb MemTable provides k-v data will be written, The operation interface is deleted and read the k-v records, But the fact is that Memtable does not exist in the real delete, delete a Key Value in Memtable is implemented as insert a record, But will hit the delete a Key marker, Really delete operation is Lazy, Will in the future in the process of Compaction to remove the k-v.
 
 Of note, LevelDb Memtable k-v on Key is based on the size of the order in the system memory, insert a new k-v, LevelDb to put the k-v into the right position in order to keep this Key order. In fact, LevelDb Memtable is just an interface class, real operation is done through behind SkipList, including the insertion operation and read operations, so the core data structure of Memtable is a SkipList.
-
 
 ### SSTable
 
@@ -205,15 +254,15 @@ As you can see from this figure, from the large side, .sst files can be divided 
 
 ![](assets/SA_SSTable_dataindex_10_09.jpg)
 
-This figure is a schematic diagram of the internal structure of data index. Again, Data Block KV records in the Key arrange the, Each record data index is established on the index information of a Data Block, Each index information includes three contents, Block shown in the figure, the index of index i: the first field red part of the record is greater than or equal to the maximum key data key block i value, The second field points out that the data block I in .sst the starting position in the file, The third field points to Data Block i size (sometimes a data compression).
+This figure is a schematic diagram of the internal structure of data index. Again, Data Block k-v records in the Key arrange the, Each record data index is established on the index information of a Data Block, Each index information includes three contents, Block shown in the figure, the index of index i: the first field red part of the record is greater than or equal to the maximum key data key block i value, The second field points out that the data block I in .sst the starting position in the file, The third field points to Data Block i size (sometimes a data compression).
 
 #### Block data structure
 
 ![](../architecture/SSTable/assets/Block_structure_10_02.png)
 
-As can be seen from the graph, its interior is divided into two parts, the front is a KV record, the order is based on the Key value from small to large, in the Block tail is some "restart" (Restart Point), is actually some pointer, points out that the Block contents in some recording position.
+As can be seen from the graph, its interior is divided into two parts, the front is a k-v record, the order is based on the Key value from small to large, in the Block tail is some "restart" (Restart Point), is actually some pointer, points out that the Block contents in some recording position.
 
-"The restart point "is stem what of? We have repeatedly stressed, The Block content in the KV record is ordered according to the size of Key, In this way, Two records of adjacent may Key some overlap, For example, key I="the Car", Key i+1="the color",Then there is overlap"the c", In order to reduce the storage capacity of Key, Key i+1 can only store and a different Key part"olor", The common part can be obtained from Key I. Recording of Key content in Block part is so storage, the main purpose is to reduce the storage overhead. "The restart point "the meaning is: at the beginning of this record, no longer take only record the various Key components, but re recording all values of Key, assuming Key i+1 is a restart, then Key will complete storage" the color ", rather than a simple" olor "mode. Block tail is pointed out which records are the restart point.
+"The restart point "is stem what of? We have repeatedly stressed, The Block content in the k-v record is ordered according to the size of Key, In this way, Two records of adjacent may Key some overlap, For example, key I="the Car", Key i+1="the color",Then there is overlap"the c", In order to reduce the storage capacity of Key, Key i+1 can only store and a different Key part"olor", The common part can be obtained from Key I. Recording of Key content in Block part is so storage, the main purpose is to reduce the storage overhead. "The restart point "the meaning is: at the beginning of this record, no longer take only record the various Key components, but re recording all values of Key, assuming Key i+1 is a restart, then Key will complete storage" the color ", rather than a simple" olor "mode. Block tail is pointed out which records are the restart point.
 
 #### Record format
 
@@ -221,8 +270,39 @@ As can be seen from the graph, its interior is divided into two parts, the front
 
 In the Block content area, The internal structure of each k-v record is what? The figure gives the detailed structure, Each record contains 5 fields: key sharing length, For example, the "olor" record, The key and a record shared Key part length is "the C" length, 5; key non shared length, For "olor", 4; value Key:Value Value points out that the length of the length, In the Value content stored in the field behind the actual Value value; while the key non shared content is the actual storage "olor" the Key string.
 
-
 ### Compaction
+
+For LevelDb, the recording operation is very simple, just write a delete delete records label even if finished, but read the record is more complex, need to take in order to find fresh in memory and all levels of file, a very high price. In order to speed up the reading speed, levelDb took compaction to the existing record of finishing compression, by this way, to remove some no longer valid k-v data, reduce the data size, reduce the number of files etc.
+
+The levelDb compaction mechanism and process and Bigtable are basically the same, Bigtable says that three types of compaction:, minor, major and full. The so-called minor Compaction, is the memtable data to an SSTable file; major compaction is associated with different levels of SSTable files, and full compaction is to merge all SSTable.
+
+LevelDb contains two of them, [minor](#minor) and [major](#major).
+
+<a id="minor"></a>
+#### Minor Compaction
+
+![](../architecture/SSTable/assets/Minor_Compaction_10_05.png)
+
+As can be seen from the figure, when the number of memtable to a certain extent will be converted to immutable memtable, this time not to write record, only read content from k-v. Introduced before, immutable memtable is in fact a multilevel queue SkipList, the record is based on the key ordered. So the minor compaction implementation is very simple, Is in accordance with the ascending immutable memtable traversal records, And then write a new SSTable file in level 0, The establishment of index data file is finished, So that the completion of a minor compaction. From the figure can be seen, In a deleted record, In the minor compaction process does not actually delete the record, The reason is very simple, Here only know to delete key records, But where is this k-v data? The need of complex search, So when minor compaction does not delete, But will the key as a record to the file, As for the real delete operation, After the higher level of compaction will do.
+
+When the number of a level SSTable file exceeds the set value, levelDb will select a file from the level SSTable (level> 0), the high level of the level+1 SSTable merger documents, this is major compaction.
+
+We know that in more than 0 levels, each SSTable file in Key is to orderly storage, but also between different documents to key range (between the minimum key and maximum key files) will not have any overlap. The Level 0 SSTable file some special, although each file is sorted according to the Key, but since level 0 file is generated directly through minor compaction, so any two level two sstable files under key 0 may have overlapping range. So when major compaction, For more than 0 level level, Choose one of the file on the line, But for level 0, Specify a file, The level is likely to have other SSTable files of the key range and the document overlap, This case, To find all the overlap of the document and level 1 files are merged, Level 0 when the file selection, There may be multiple files in major compaction.
+
+LevelDb compaction in the selection of a level, You also choose any specific files to compaction, LevelDb is a small skills here., That is to say to take turns, For example, the file A compaction, So the next time is in key range is next to the file A file B compaction, So each file will have the opportunity to take turns and high-level level file merge.
+
+<a id="major"></a>
+#### Major Compaction
+
+![](../architecture/SSTable/assets/Major_Compaction_10_05.png)
+
+The process of Major compaction are as follows: the multiple files using multi merge sort of way, in order to find out where the minimum Key record, is for all the recording multiple files in the re ranking. After taking a certain standard to judge whether the Key also needs to be saved, if not saved value, then directly away, if you still need to save, then write it to the new generation of level L+1 layer in a SSTable file. So on the one one k-v data processing, formed a series of new L+1 data file, before the L layer file and the L+1 layer in compaction file data at this time has no meaning, so delete all. This completes the combined process of L layer and L+1 layer file record.
+
+Then the major compaction process, determine what is a k-v record is abandoned? Which is a standard: for a key, if less than this Key exists in L layer, the k-v in the major compaction process can drop. Because we the above analyses, the level below the L file if there is the same Key record, so that for Key, there is more fresh Value, so Value in the past is no meaning, so they can be deleted.
+
+### Version
+
+![](https://img.shields.io/badge/SA-TODO-yellow.svg)
 
 
 
@@ -233,7 +313,7 @@ In the Block content area, The internal structure of each k-v record is what? Th
 <a id="Evolution_Perspective"></a>
 ## 6. Evolution Perspective
 
-
+![](https://img.shields.io/badge/SA-TODO-yellow.svg)
 
 
 
@@ -244,14 +324,14 @@ In the Block content area, The internal structure of each k-v record is what? Th
 
 https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_2):_Data_Storage#Use_of_LevelDB
 
-
+![](https://img.shields.io/badge/SA-TODO-yellow.svg)
 
 
 &nbsp;   
 <a id="Conclusion"></a>
 ## 8. Conclusion
 
-
+![](https://img.shields.io/badge/SA-TODO-yellow.svg)
 
 
 
