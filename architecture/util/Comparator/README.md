@@ -28,7 +28,20 @@ BytewiseComparatorImpl&InternalKeyComparator:
 &nbsp;   
 <a id="module_function"></a>
 ## 模块功能
+![](assets/Comparator.png)
 
+在comparator.h中定义，主要函数有：
+Compare 为实际使用的比较函数。
+Name 获取comparator的名称，主要为了防止建立和读取时使用了不同的Comparator。
+FindShortestSeparator 找出参数[start，limit)区间内间一个短的串，主要作用是降低一点储存空间。
+FindShortestSuccessor 作用类似上一个函数。
+
+![](assets/BytewiseComparatorImpl.png)
+
+在comparator.cc中实现。
+其Compare函数直接调用Slice的Compare。
+
+![](assets/InternalKeyComparator.png)
 
 
 &nbsp;   
