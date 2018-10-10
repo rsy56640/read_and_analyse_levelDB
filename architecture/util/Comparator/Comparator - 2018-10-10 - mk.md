@@ -1,4 +1,4 @@
-# Module - 2018-10-10 毛恺
+# Comparator - 2018-10-10 毛恺
 
 - [模块信息](#module_info)
 - [模块概要](#module_in_brief)
