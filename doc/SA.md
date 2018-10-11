@@ -130,24 +130,21 @@ LevelDb has the following advantages:
 - In addition, LevelDb supports data snapshot (snapshot) function, the read operation is not affected by the write operation, can always see consistent data in the reading process.
 - In addition, LevelDb also supports data compression to reduce the operation, the storage space and increase IO efficiency have direct help.
 
-
 ### Fast Storage
 
 LevelDb performance is very outstanding, the official website of the random write performance up to 400000 records per second, while the random read performance up to 60000 records per second. In general, the write operation of LevelDb is much faster than the read operation, and the sequential read operation is much faster than random read and write operations. Why is this, see our follow-up to the introduction of LevelDb Gu Yanwu, estimated that you will understand the intrinsic reason.
 
-
-
 ### Snapshot
 
-![](https://img.shields.io/badge/SA-TODO-yellow.svg)
+In addition, LevelDb supports data snapshot, the read operation is not affected by the write operation, can always see consistent data in the reading process.
 
-
-
+On every write, we generate a sequence number. We store the number locally and use the oldest still living snapshot as the oldest version that we have to retain when doing compaction work.
 
 ### Recover
 
-![](https://img.shields.io/badge/SA-TODO-yellow.svg)
+![](../architecture/DB/assets/version_recover_10_12.jpeg)
 
+LevelDB will rebuild the lateset version by the leverage of .manifest whenever levelDB starts, which is called recovery.
 
 
 &nbsp;   
