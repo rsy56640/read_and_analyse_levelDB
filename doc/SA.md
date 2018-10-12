@@ -310,27 +310,31 @@ Then the major compaction process, determine what is a k-v record is abandoned? 
 <a id="Evolution_Perspective"></a>
 ## 6. Evolution Perspective
 
-![](https://img.shields.io/badge/SA-TODO-yellow.svg)
+[The Google forum for levelDB](https://groups.google.com/forum/#!forum/leveldb)   
+[Issues of levelDB on Github](https://github.com/google/leveldb/issues)
 
-
+LevelDB is based on concepts from Google's Bigtable database system. The table implementation for the Bigtable system was developed starting in about 2004, and is based on a different Google internal code base than the LevelDB code. That code base relies on a number of Google code libraries that are not themselves open sourced, so directly open sourcing that code would have been difficult. Jeff Dean and Sanjay Ghemawat wanted to create a system resembling the Bigtable tablet stack that had minimal dependencies and would be suitable for open sourcing, and also would be suitable for use in Chrome for the IndexedDB implementation. They wrote LevelDB starting in early 2011, with the same general design as the Bigtable tablet stack, but not sharing any of the code.
 
 
 &nbsp;   
 <a id="Technical_Debt_Analysis"></a>
 ## 7. Technical Debt Analysis
 
-https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_2):_Data_Storage#Use_of_LevelDB
+### Defect Debt
 
-![](https://img.shields.io/badge/SA-TODO-yellow.svg)
+LevelDB is used in bitcoin and it had a bug that, under rare conditions, could cause it to consistently return not found on records that were really there. . . Leveldb fixed this serious bug in a minor update. But deploying a fix like this in an uncontrolled manner in the bitcoin network would potentially cause a fork in the consensus state; so any such fix would need to be rolled out in an orderly manner.
+
+### Codestyle Debt
+
+- Mush use of type erasure impedes the progress of reading source code and maintain the project.
+- I've once noticed that the iteration_expression in for-loop is located at the end of the code block, which is more than 100 lines below the for-loop.
 
 
 &nbsp;   
 <a id="Conclusion"></a>
 ## 8. Conclusion
 
-![](https://img.shields.io/badge/SA-TODO-yellow.svg)
-
-
+LevelDB is designed to be used as persistent storage engine in Google Bigtable. It provides users with fast k-v storage and snapshot, but without server and client backend. It has been widely used in database domain, such as bitcoin storage engine. Facebook has developed [RocksDB](https://github.com/facebook/rocksdb) based on levelDB. In addition, levelDB made a good start for distributed storage.
 
 
 &nbsp;   
@@ -339,11 +343,6 @@ https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_2):_Data_Storage#Use_of_LevelDB
 
 - [What are the keys used in the blockchain levelDB (ie what are the key:value pairs)?](https://bitcoin.stackexchange.com/questions/28168/what-are-the-keys-used-in-the-blockchain-leveldb-ie-what-are-the-keyvalue-pair)
 - [Node.js + LevelDB](https://coderead.wordpress.com/2013/04/04/node-js-leveldb/)
-- []()
-- []()
-- []()
-- []()
-- []()
 
 
 
