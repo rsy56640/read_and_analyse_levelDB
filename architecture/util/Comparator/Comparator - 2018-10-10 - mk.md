@@ -3,11 +3,7 @@
 - [模块信息](#module_info)
 - [模块概要](#module_in_brief)
 - [模块功能](#module_function)
-- [接口说明](#interface_specification)
 - [相关依赖说明](#dependency_specification)
-- [内部实现细节](#inner_detail)
-- [参考资料](#reference)
-
 
 &nbsp;   
 <a id="module_info"></a>
@@ -45,25 +41,7 @@ FindShortestSuccessor 作用类似上一个函数。
 
 
 &nbsp;   
-<a id="interface_specification"></a>
-## 接口说明
-
-
-
-
-&nbsp;   
 <a id="dependency_specification"></a>
 ## 相关依赖说明
 
-
-
-&nbsp;   
-<a id="inner_detail"></a>
-## 内部实现细节
-
-
-
-&nbsp;   
-<a id="reference"></a>
-## 参考资料
-
+需要定义 "db/dbformat.h" "include/leveldb/comparator.h"
