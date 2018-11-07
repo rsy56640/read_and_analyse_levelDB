@@ -79,14 +79,14 @@ I have played around a bit with Level, and I’ve been really impressed by it’
 
 
 &nbsp;   
-<a id="Context_View"></a>
+<a id="context_view"></a>
 ## 3. Context View
 
 leveldb is a BigTable-inspired key-value database library. It’s available for Unix based systems, Mac OS X, Windows, and Android… LevelDB is not a database server like other other key-value stores like Redis or Membase. Instead, it would most likely be used as an embedded database for other applications, much the way SQLite or Berkley DB are used. The technical advantage to using LevelDB instead of other key-value stores is its support for ordered data. Also, its BSD license is more liberal than the GPL Sleepycat license of Berkley DB.”
 
 
 &nbsp;   
-<a id="leveldb_in_Bigtable"></a>
+<a id="leveldb_in_bigtable"></a>
 ### 3.1 leveldb in Bigtable
 
 Bigtable is built on several other pieces of Google infrastructure such as levelDB and the distributed Google File System (GFS).   
@@ -98,7 +98,7 @@ keys and values are arbitrary byte strings. Operations are provided to look up t
 ![](assets/SA_Bigtable_10_09.jpg)
 
 
-<a id="Platform_Dependency"></a>
+<a id="platform_dependency"></a>
 ### 3.2 Platform & Dependency
 
 #### [Levelup](https://github.com/Level/levelup)
@@ -108,7 +108,7 @@ Levelup is a Node.js project that aims to provide a common, portable interface t
 LevelDB is embedded, but can be networked adding protocols such as http, tcp or udp to your process.
 
 
-<a id="Development_Community"></a>
+<a id="development_community"></a>
 ### 3.3 Development & Community
 
 A platform that plays an important role during development is GitHub, which is used for code versioning, issue tracking and project management.[leveldb on Github](https://github.com/google/leveldb)
@@ -117,7 +117,7 @@ Discussion group for LevelDB. LevelDB is a open source library that implements a
 
 
 &nbsp;   
-<a id="Functional_View"></a>
+<a id="functional_view"></a>
 ## 4. Functional View
 
 LevelDb is the two great spirit level engineers is an open-source project, in short, LevelDb is capable of processing one billion scale Key-Value persistent data storage C++ Library. As described above, the two is the design and implementation of Bigtable, if the understanding of Bigtable, should know that there are two core in distributed storage system, the influence of part: Master Server and Tablet Server. The Master Server store data management and distributed scheduling, the distributed data storage and read and write operation is completed by the Tablet Server, and LevelDb can be understood as a simplified version of the Tablet Server.
@@ -148,7 +148,7 @@ LevelDB will rebuild the lateset version by the leverage of .manifest whenever l
 
 
 &nbsp;   
-<a id="Architecture"></a>
+<a id="architecture"></a>
 ## 5. Architecture
 
 levelDB is NoSQL database, which adopt sequential writing strategy other than random I/O.
@@ -159,7 +159,7 @@ levelDB is NoSQL database, which adopt sequential writing strategy other than ra
 
 
 &nbsp;   
-<a id="Module_View"></a>
+<a id="module_view"></a>
 ## 5.1 Module View
 
 ![](assets/SA_architecture_10_09.jpg)
@@ -176,7 +176,7 @@ The SSTable file is Key order, That is in the file and key records before Key re
 
 
 &nbsp;   
-<a id="Common_Design_Models"></a>
+<a id="common_design_models"></a>
 ## 5.2 Common Design Models
 
 In this section, common designs that are used and standardized in the development of levelDB are described.
@@ -307,7 +307,7 @@ Then the major compaction process, determine what is a k-v record is abandoned? 
 
 
 &nbsp;   
-<a id="Evolution_Perspective"></a>
+<a id="evolution_perspective"></a>
 ## 6. Evolution Perspective
 
 [The Google forum for levelDB](https://groups.google.com/forum/#!forum/leveldb)   
@@ -317,7 +317,7 @@ LevelDB is based on concepts from Google's Bigtable database system. The table i
 
 
 &nbsp;   
-<a id="Technical_Debt_Analysis"></a>
+<a id="technical_debt_analysis"></a>
 ## 7. Technical Debt Analysis
 
 ### Defect Debt
@@ -331,14 +331,14 @@ LevelDB is used in bitcoin and it had a bug that, under rare conditions, could c
 
 
 &nbsp;   
-<a id="Conclusion"></a>
+<a id="conclusion"></a>
 ## 8. Conclusion
 
 LevelDB is designed to be used as persistent storage engine in Google Bigtable. It provides users with fast k-v storage and snapshot, but without server and client backend. It has been widely used in database domain, such as bitcoin storage engine. Facebook has developed [RocksDB](https://github.com/facebook/rocksdb) based on levelDB. In addition, levelDB made a good start for distributed storage.
 
 
 &nbsp;   
-<a id="References"></a>
+<a id="references"></a>
 ## 9. References
 
 - [What are the keys used in the blockchain levelDB (ie what are the key:value pairs)?](https://bitcoin.stackexchange.com/questions/28168/what-are-the-keys-used-in-the-blockchain-leveldb-ie-what-are-the-keyvalue-pair)
