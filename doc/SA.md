@@ -10,7 +10,7 @@ LevelDB is an open source on-disk key-value store written by Google fellows Jeff
 ## Table of Contents
 
 - [1. Introduction](#Introduction)
-- [2. Stakeholders](#Stakeholders)
+- [2. Stakeholders](#stakeholders)
 - [3. Context View](#Context_View)
   - [3.1 leveldb in Bigtable](#leveldb_in_Bigtable)
   - [3.2 Platform & Dependency](#Platform_Dependency)
@@ -46,7 +46,7 @@ LevelDB is based on concepts from Google's Bigtable database system. The table i
 
 
 &nbsp;   
-<a id="Stakeholders"></a>
+<a id="stakeholders"></a>
 ## 2. Stakeholders
 
 To start off our analysis, we will look at the stakeholders involved with levelDB. A stakeholder is an entity of a system architecture that consists of an individual or an organization that has importance and interest to realize a system.
