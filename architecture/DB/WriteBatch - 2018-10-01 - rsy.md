@@ -59,6 +59,14 @@ leveldb 内部的一个批量写的结构，在 leveldb 为了提高插入和删
 
 `Status WriteBatchInternal::InsertInto(const WriteBatch* b, MemTable* memtable)`：将 `WriteBatch` 内容全部插入到 `MemTable` 里面去，调用 `WriteBatch::Iterate` 接口。
 
+-----
+
+**`InsertInto()`：**从 writebatch 到 memtable
+
+- 先拿出来 sequence number
+- 然后将 k-v 不断迭代地插入memtable
+
+
 &nbsp;   
 
 存储格式：

@@ -176,7 +176,7 @@
 - [Memtable](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Memtable%20-%202018-10-04%20-%20rsy.md)：任思远
   - `db/memtable.h`, `db/memtable.cc`
   - 总结：存储 k-v 插入、删除的操作（并不真正删除，只打标记）并且将数据序列化，在写 level-0 时将 `iter` 传入 `BuildTable` 写入文件
-- [Table]()：任思远
+- [Table](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Table%20-%202018-10-04%20-%20rsy.md)：任思远
   - `include/leveldb/table.h`, `table/table.cc`, `table/table_builder.cc`, `include/leveldb/table_builder.h`
   - 总结：
       - `Table` 类主要完成 sstable 的读取逻辑
@@ -202,67 +202,30 @@
 
 
 &nbsp;   
-### 10-17 ~ 10-23 第八周
+### 10-17 ~ 之后
 
-- [ValueType, SequenceNumber]()：
+- [ValueType, SequenceNumber]()：任思远
   - `db/dbformat.h`
   - 指导：
       - `put` 插入新的 kv 数据；`delete` 是 `put` 空，为了区分真实 kv 数据和删除操作的 mock 数据，使用 `ValueType` 来标识
       - leveldb 中的每次更新（`put`/`delete`)操作都拥有一个版本，由 `SequnceNumber` 来标识，整个 db 有一个全局值保存着当前使用到的 `SequnceNumber`
-  - 可参考：[leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
   - 总结：
-- []()：
+- [Snapshot]()：任思远
   - ``
-  - 指导：
-  - 可参考：
-      - []()
   - 总结：
-- []()：
+- [Manifest & VersionEdit]()：任思远
   - ``
-  - 指导：
-  - 可参考：
-      - []()
   - 总结：
-- []()：
+- [Log]()：任思远
   - ``
-  - 指导：
-  - 可参考：
-      - []()
   - 总结：
-
-
-
-&nbsp;   
-### 10-24 ~ 10-30 第九周
-
-- []()：
+- [Recover]()：任思远
   - ``
-  - 指导：
-  - 可参考：
-      - []()
   - 总结：
-- []()：
+- [Version & VersionSet]()：任思远
   - ``
-  - 指导：
-  - 可参考：
-      - []()
   - 总结：
-- []()：
+- [DB流程]()：任思远
   - ``
-  - 指导：
-  - 可参考：
-      - []()
-  - 总结：
-- []()：
-  - ``
-  - 指导：
-  - 可参考：
-      - []()
-  - 总结：
-- []()：
-  - ``
-  - 指导：
-  - 可参考：
-      - []()
   - 总结：
 
