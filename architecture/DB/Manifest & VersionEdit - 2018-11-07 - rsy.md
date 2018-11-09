@@ -32,7 +32,7 @@
 Manifest:
 > A MANIFEST file lists the set of sorted tables that make up each level, the corresponding key ranges, and other important metadata. A new MANIFEST file (with a new number embedded in the file name) is created whenever the database is reopened. The MANIFEST file is formatted as a log, and changes made to the serving state (as files are added or removed) are appended to this log.
 
-为了避免进程崩溃或机器宕机导致的数据丢失，LevelDB 需要将元信息数据持久化到磁盘，承担这个任务的就是 Manifest 文件。可以看出每当有新的 Version 产生都需要更新 Manifest，很自然的发现这个新增数据正好对应于 VersionEdit 内容，也就是说 Manifest 文件记录的是一组 VersionEdit 值，在 Manifest 中的一次增量内容称作一个 Block，其内容如下：就是 VersionEdit 的内容。
+为了避免进程崩溃或机器宕机导致的数据丢失，LevelDB 需要将元信息数据持久化到磁盘，承担这个任务的就是 Manifest 文件。可以看出每当有新的 Version 产生都需要更新 Manifest，很自然的发现这个新增数据正好对应于 VersionEdit 内容，也就是说 Manifest 文件记录的是一组 VersionEdit 值，在 Manifest 中的一次增量内容称作一个 Block，其内容如下：**就是 VersionEdit 的内容**。
 
 Current:
 > CURRENT is a simple text file that contains the name of the latest MANIFEST file.
@@ -42,11 +42,9 @@ Current:
 <a id="module_function"></a>
 ## 模块功能
 
-为了重启 db 后可以恢复退出前的状态，需要将 db 中的状态保存下来，这些状态信息就保存在 manifeest 文件中。  
+为了重启 db 后可以恢复退出前的状态，需要将 db 中的状态保存下来，这些状态信息就保存在 manifest 文件中。  
 当 db 出现异常时， 为了能够尽可能多的恢复，manifest 中不会只保存当前的状态，而是将历史的状态都保存下来。 又考虑到每次状态的完全保存需要的空间和耗费的时间会较多，当前采用的方式是，只在 manifest 开始保存完整的状态信息（`VersionSet::WriteSnapshot()`），接下来只保存每次
 compact 产生的操作（VesrionEdit），重启 db 时，根据开头的起始状态，依次将后续的 VersionEdit replay，即可恢复到退出前的状态（Vesrion）。
-
-**Version 是全量，VersionEdit 是增量**，VersionEdit 中记录了要删除和增加的文件，pair<int, FileMetaData / uint64_t> 中 int 表示 level。
 
 将 VersionEdit 加入 Version 时要用到帮助类`class VersionSet::Builder` 中 `Builder::Apply(VersionEdit*)`，使用 `Builder::SaveTo(Version* v)` 把这些version的叠加总和存进去。
 
@@ -54,6 +52,8 @@ compact 产生的操作（VesrionEdit），重启 db 时，根据开头的起始
 &nbsp;   
 <a id="interface_specification"></a>
 ## 接口说明
+
+**Version 是全量，VersionEdit 是增量**，VersionEdit 中记录了要删除和增加的文件，`pair<int, FileMetaData / uint64_t>` 中 `int` 表示 level。
 
 - `VersionSet::Builder::Apply(VersionEdit*)`：**加入增量**。在 `VersionSet::LogAndApply()` 和 `VersionSet::Recover()` 中调用。
 - `VersionSet::Builder::SaveTo(Version*)`：**将结果存入 空Version\*：把 上一个Version 和 Versionedit 中的文件 按顺序 调用MaybeAddFile()**。在 `VersionSet::LogAndApply()` 和 `VersionSet::Recover()` 中调用。
