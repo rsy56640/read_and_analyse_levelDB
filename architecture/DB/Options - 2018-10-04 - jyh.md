@@ -56,10 +56,6 @@ Export (include/leveldb/export.h)
 操作需要返回值
 
 &nbsp;   
-<a id="inner_detail"></a>
-## 内部实现细节
-
-&nbsp;   
 <a id="reference"></a>
 ## 参考资料
 - [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf)
