@@ -20,6 +20,8 @@
 <a id="module_in_brief"></a>
 ## 模块概要
 
+![](assets/Compaction_UML_10_5.png)
+
 - LevelDB 存储分为两部分，一部分在内存，另一部分在磁盘上。内存中方便快速查找， 查找失败后，去磁盘上查找。一段时间后或内存达到一定大小，会将内存中的 compact 成 .sst 文件存在磁盘
 - compaction 是执行 LSM-tree 中 merge 的过程
 - 删除操作在 memtable 只是打上删除标记，**真正的删除** 在 compaction 中做
@@ -33,7 +35,7 @@
 <a id="module_function"></a>
 ## 模块功能
 
-![](assets/Compaction_UML_10_5.png)
+![](./assets/LevelDB-BackgroundCompaction-Processes_11_12.jpg)
 
 当 level-L 的总文件大小查过限制时，我们就在后台执行 compaction 操作。 Compaction 操作从 level-L 中选择一个文件 f，以及选择中所有和 f 有重叠的文件。如果某个 level-(L+1) 的文件 ff 只是和 f 部分重合，compaction 依然选择 ff 的完整内容作为输入，在 compaction 后 f 和 ff 都会被丢弃。并且确保 level-(L+1) 与 level-(L+2) 
 
