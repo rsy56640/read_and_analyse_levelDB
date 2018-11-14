@@ -41,14 +41,23 @@
 
 - `Add()`：提供 **插入**、**删除**（只记录删除操作，而不真正删除，直到 Compaction）
 - `Get()`：查找
-- `NewwIterator()`：遍历，用于 `BuildTable` 写入文件
+- `NewIterator()`：封装了 memtable 的迭代器，用于
+  - `BuildTable` 写入文件
+  - 给用户提供 iterator（`DBImpl::NewInternalIterator()`）
 
 
 &nbsp;   
 <a id="dependency_specification"></a>
 ## 相关依赖说明
 
-在 写 level-0 时将 `iter` 传入 `BuildTable` 中写入文件。
+**从 WriteBatch 写入**：
+
+- `DBImpl::Write(WriteBatch*)`
+- `WriteBatchInternal::InsertInto(const WriteBatch*, MemTable*)`
+- `WriteBatch::Iterate(MemTableInserter*)`：**将 k-v 不断迭代地插入 memtable**
+- `MemTableInserter::Put()` 和 `MemTableInserter::Delete()` 转发给 `Memtable::Add()`
+
+**Dump**：在 写 level-0 时将 `iter` 传入 `BuildTable` 中写入文件。
 
 
 &nbsp;   
@@ -78,8 +87,8 @@ KV 的实际存储格式：
 ![](assets/KV_format_10_04.png)
 
 - `Add()`：把 `key + ValueType + value` 序列化之后塞进去
-- `Get()`：反序列化，找key
-- `NewIterator()`：遍历，在 `BuildTable` 中写入文件
+- `Get()`：反序列化，找 key
+- `NewIterator()`：memtable 对 key 的查找和遍历封装成 `MemTableIterator`。 底层直接使用 SkipList 的类 Iterator 接口
 - `MemTableIterator`：用于解析格式、遍历
 
 

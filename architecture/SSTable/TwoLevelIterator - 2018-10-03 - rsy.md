@@ -20,6 +20,8 @@
 <a id="module_in_brief"></a>
 ## 模块概要
 
+![](assets/TwoLevelIterator_11_15.jpg)
+
 将对 `Table` 的遍历封装，对外展现如同线性遍历。
 
 
@@ -42,6 +44,8 @@
 ## 相关依赖说明
 
 两层迭代器都是 `IteratorWrapper` 类型而不是 iter，主要是为了缓存 key 和 valid。
+
+`DBImpl::NewIterator()` -> `DBImpl::NewInternalIterator()` -> `Version::AddIterators()` -> `TableCache::NewIterator()` -> `Table::NewIterator()` -> `NewTwoLevelIterator()`
 
 
 &nbsp;   

@@ -39,16 +39,25 @@ leveldb 内部的一个批量写的结构，在 leveldb 为了提高插入和删
 - `Delete()`：存储 delete 操作
 - `Iterate()`：遍历内容 经handler接口 存到 memtable 中
 
+`class WriteBatchInternal`：工具类
+
+- `WriteBatchInternal::Count()`：返回个数
+- `WriteBatchInternal::SetCount()`
+- `WriteBatchInternal::Sequence()`：返回 sequence number
+- `WriteBatchInternal::SetSequence()`
+- `WriteBatchInternal::Contents()`：返回内容
+- `WriteBatchInternal::SetContents()`
+- `WriteBatchInternal::Append(WriteBatch* dst, const WriteBatch* src)`：拼接两个 WriteBatch
+- `WriteBatchInternal::InsertInto(const WriteBatch* b, MemTable* memtable)`：将 WriteBatch 写入 memtable，转发给了 `WriteBatch::Iterate()`
+
 
 &nbsp;   
 <a id="dependency_specification"></a>
 ## 相关依赖说明
 
-上层方法调用：
+上层方法调用：当插入数据时，`DBImpl::Put()` 和 `DBImpl::Delete()` 调用 `WriteBatch::Put()` 和 `WriteBatch::Delete()` 方法将记录添加进 `WriteBatch::rep_`，然后 `DBImpl::Write(WriteBatch*)` 调用 `WriteBatchInternal::InsertInto()` 方法。
 
-在 DBImpl 最上层类中，当插入数据时，先是调用 `WriteBatch::Put()` 和 `WriteBatch::delete()` 方法将记录添加进 `WriteBatch::rep_`，然后调用 `WriteBatchInternal::InsertInto()` 方法。
-
-数据库流程：先是调用 `DB::Put()` 和 `DB::Delete()` 方法，这两个方法再调用 `Write()` 将数据写到 `memtable`。`Write()` 最终是先将 `WriteBatch::rep_`中的记录先添加进log文件，最后调用 `WriteBatchInternal::InsertInto()` 方法，将记录添加进 memtable`。
+数据库流程：先是调用 `DB::Put()` 和 `DB::Delete()` 方法，这两个方法再调用 `Write()` 将数据写到 `memtable`。`Write()` 最终是先将 `WriteBatch::rep_`中的记录先添加进 log 文件，最后调用 `WriteBatchInternal::InsertInto()` 方法，将记录添加进 memtable。
 
 
 &nbsp;   
@@ -61,10 +70,12 @@ leveldb 内部的一个批量写的结构，在 leveldb 为了提高插入和删
 
 -----
 
-**`InsertInto()`：**从 writebatch 到 memtable
+**`WriteBatch::Iterate()`：**从 writebatch 写入 memtable
 
 - 先拿出来 sequence number
-- 然后将 k-v 不断迭代地插入memtable
+- 然后将 k-v 不断迭代地插入 memtable，调用 `Memtable::Add()`
+  - `mem_->Add(sequence_, kTypeValue, key, value); ` ，sequence 自增
+  - `mem_->Add(sequence_, kTypeDeletion, key, Slice());`，sequence 自增
 
 
 &nbsp;   

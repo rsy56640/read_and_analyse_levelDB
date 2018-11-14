@@ -3,6 +3,7 @@
 - [模块信息](#module_info)
 - [模块概要](#module_in_brief)
 - [相关依赖说明](#dependency_specification)
+- [内部实现细节](#inner_detail)
 
 
 &nbsp;   
@@ -24,3 +25,17 @@
 ## 相关依赖说明
 
 由 `TableBuilder` 将 `MemtableIterator` 的数据依次写入。
+
+
+&nbsp;   
+<a id="inner_detail"></a>
+## 内部实现细节
+
+    extern Status BuildTable(const std::string& dbname,
+                             Env* env,
+                             const Options& options,
+                             TableCache* table_cache,
+                             Iterator* iter,
+                             FileMetaData* meta);
+
+`dbname` -> `fname` -> `WritableFile*` -> `TableBuilder*` -> 循环 `iter`，`TableBuilder::Add(iter->key(), iter->value())` -> `TableBuilder::Finish()`

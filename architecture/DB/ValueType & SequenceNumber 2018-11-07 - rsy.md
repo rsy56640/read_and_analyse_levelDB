@@ -19,8 +19,11 @@
 - `SequenceNumber`：标识每一次更新的版本。占 **56** bits。在 [WriteBatch](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/WriteBatch%20-%202018-10-01%20-%20rsy.md) 中记录（为一批 `record`）。
 
 > 我的理解是 SequenceNumber 是可以重复的，因为 [WriteBatch](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/WriteBatch%20-%202018-10-01%20-%20rsy.md) 中是批量写入，所以每一批的 SequenceNumber 都是一样的。
+> 
+> **上面这一句是错的！！！**读了 `DBImpl::Write()`，虽然 sequence number 只在 WriteBatch 的第一个存储，但是写完后 `last_sequence += WriteBatchInternal::Count()`，表明这个 WriteBatch 中的 record 按顺序增加 sequence number
 
-[WriteBatch](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/WriteBatch%20-%202018-10-01%20-%20rsy.md) 在 `InsertInto()` 中写入 memtable，`InsertInto()` 先拿出来 sequence number，然后中调用 `Iterate()` 不断迭代地将 batch 中的数据写入。
+[WriteBatch](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/WriteBatch%20-%202018-10-01%20-%20rsy.md) 在 `InsertInto()` 中写入 memtable，`InsertInto()` 先拿出来 sequence number，然后中调用 `Iterate()` 不断迭代地将 batch 中的数据写入（每次调用 `Memtable::Add()`，**sequence 自增**）。
+
 
 &nbsp;   
 <a id="reference"></a>
