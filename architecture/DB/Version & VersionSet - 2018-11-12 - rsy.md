@@ -71,7 +71,7 @@ Version 是管理某个版本的所有 sstable 的类，就其导出接口而言
 - `Version::AddIterators()`：为该 Version 中的所有 sstable 都创建一个 Two Level Iterator，以遍历 sstable 的内容
 - `Version::GetOverlappingInputs()`：找出指定 level 上与指定区间[`begin`, `end`] overlap 的所有 file
 - `Version::OverlapInLevel()`：检查指定 level 中的某些文件是否和 [`smallest_user_key`, `largest_user_key`] 有 overlap
-- `Version::PickLevelForMemTableOutput()`：返回我们应该在哪个 level 上放置新的 memtable compaction，这个 compaction覆盖了范围 [`smallest_user_key`, `largest_user_key`]（也就是说 **Memtable Compaction 不一定放在 level-0**）
+- `Version::PickLevelForMemTableOutput()`：返回我们应该在哪个 level 上放置新的 memtable compaction，这个 compaction 覆盖了范围 [`smallest_user_key`, `largest_user_key`]（也就是说 **Memtable Compaction 不一定放在 level-0**）
 
 > Memtable Compaction 不一定放在 level-0，如果 mem 和 level-0、level-1 都没有交集，和 level-2 有交集，就放在 level-1。   
 > 也就是说：**如果靠上的 level 和 mem 都没有交集，那么就尽量把 mem 向下 dump**。估计是为了减小 level-0 做 compaction 的压力。

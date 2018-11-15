@@ -32,7 +32,7 @@
   - `DBImpl::Recover()`：
       - `VersionSet::Recover()`：从 CURRENT 读 Manifest (VersionEdit)
       - 如果有 log 比 Manifest 文件中记录的 log 要新，那说明上次没来得及从内存 dump，于是从 log 回复数据，调用 `RecoverLogFile()`
-      - `DBImpl::RecoverLogFile()`：打开指定的 log 文件，回放日志。期间可能会执行 compaction，产生新的 level-0-sstable文件，记录文件变动到 edit 中
+      - `DBImpl::RecoverLogFile()`：打开指定的 log 文件，回放日志。期间可能会执行 compaction，产生新的 level-0 sstable 文件（`DBImpl::WriteLevel0Table(MemTable*, VersionEdit*, Version*)`），记录文件变动到 edit 中
 
 > `DBImpl::RecoverLogFile()`:  
 > &emsp;&emsp;&emsp;&emsp; `log_number` -> `LogFileName` -> `SequentialFile` -> `log::Reader` -> `record (Slice)` -> `WriteBatch` -> `MemTable`->   

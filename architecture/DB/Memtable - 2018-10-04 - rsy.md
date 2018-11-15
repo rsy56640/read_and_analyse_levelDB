@@ -42,7 +42,7 @@
 - `Add()`：提供 **插入**、**删除**（只记录删除操作，而不真正删除，直到 Compaction）
 - `Get()`：查找
 - `NewIterator()`：封装了 memtable 的迭代器，用于
-  - `BuildTable` 写入文件
+  - `DBImpl::WriteLevel0Table()` 调用 `BuildTable()` 写入文件
   - 给用户提供 iterator（`DBImpl::NewInternalIterator()`）
 
 
@@ -57,7 +57,7 @@
 - `WriteBatch::Iterate(MemTableInserter*)`：**将 k-v 不断迭代地插入 memtable**
 - `MemTableInserter::Put()` 和 `MemTableInserter::Delete()` 转发给 `Memtable::Add()`
 
-**Dump**：在 写 level-0 时将 `iter` 传入 `BuildTable` 中写入文件。
+**Dump**：`DBImpl::WriteLevel0Table()` 在 写 level-0（不一定） 时将 `iter` 传入 `BuildTable()` 中写入文件。
 
 
 &nbsp;   
