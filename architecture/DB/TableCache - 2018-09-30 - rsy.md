@@ -70,7 +70,7 @@ table cache 缓存的是 sstable 的索引数据
 
 &nbsp;   
 `TableCache::NewIterator()`：   
-调用 `FindTable()`，返回 `Handle` 对象，取出 `Table` 对象，并创建一个 `Iterator`，并注册一个回调的 cleanup 函数。
+调用 `FindTable()`，返回 `Handle` 对象，取出 `Table` 对象，并创建一个 `Iterator`，并注册一个回调的 cleanup 函数。（**实际上经常用于添加 sstable 到 TableCache**）
 
 
 &nbsp;    

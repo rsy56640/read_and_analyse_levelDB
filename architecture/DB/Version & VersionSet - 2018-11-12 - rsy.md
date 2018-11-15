@@ -80,10 +80,11 @@ Version 是管理某个版本的所有 sstable 的类，就其导出接口而言
 
 - [`class VersionSet::Builder`](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Manifest%20%26%20VersionEdit%20-%202018-11-07%20-%20rsy.md)：对 Version 应用 VersionEdit 增量
 - `VersionSet::Finalize(Version*)`：计算下一次 compaction 最合适的 level
-- `VersionSet::LogAndApply()`：应用 VersionEdit 增量，刷新、写入 Manifest 文件，每次 compaction 时调用
+- **`VersionSet::LogAndApply()`**：**应用 VersionEdit 增量，刷新、写入 Manifest 文件，每次 compaction 时调用**
 - `VersionSet::CompactRange()`：返回一个 Compact*，用于 manual compact
 - `VersionSet::PickCompaction()`：返回一个 Compact*，用于自动触发的 compaction；`CompactRange()` 是手动触发
 - `VersionSet::Recover()`：从 CURRENT 读 Manifest (VersionEdit)
+- `VersionSet::MakeInputIterator(Compaction*)`：针对 compaction，返回用于遍历多个 sstable 文件的 iterator
 
 
 &nbsp;   
@@ -111,6 +112,10 @@ Version 是管理某个版本的所有 sstable 的类，就其导出接口而言
 
 ### `VersionSet::Recover()` 调用层次
 `DBImpl::Open()` -> `DBImpl::Recover()` -> `VersionSet::Recover()`
+
+### `VersionSet::MakeInputIterator(Compaction*)` 调用层次
+
+`DBImpl::BackgroundCompaction()` -> `DBImpl::DoCompactionWork(CompactionState*)` -> `VersionSet::MakeInputIterator(Compaction*)`
 
 
 &nbsp;   
@@ -147,6 +152,11 @@ Version 是管理某个版本的所有 sstable 的类，就其导出接口而言
 
 ### `VersionSet::Recover()`
 参考 [Recover](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Recover%20-%202018-11-08%20-%20rsy.md#%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B)
+
+### `VersionSet::MakeInputIterator(Compaction*)`
+
+- 对于 level-0 的 sstable 文件，每一个文件作为一个 iterator 存在
+- 对于 level>0 的 sstable 文件，使用 `NewTwoLevelIterator()` 包装 `Version::LevelFileNumIterator()` 来当做这一层的 iterator
 
 
 &nbsp;   

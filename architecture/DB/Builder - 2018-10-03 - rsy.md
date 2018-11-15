@@ -24,7 +24,7 @@
 <a id="dependency_specification"></a>
 ## 相关依赖说明
 
-由 `TableBuilder` 将 `MemtableIterator` 的数据依次写入。
+由 `TableBuilder` 将 `MemtableIterator` 的数据依次写入 sstable，并将新生成的 sstable 加入 TableCache。
 
 
 &nbsp;   
