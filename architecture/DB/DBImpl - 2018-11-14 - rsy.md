@@ -35,25 +35,25 @@
 <a id="interface_specification"></a>
 ## 接口说明
 
-- `DB::Open()`
-- `DestroyDB()`
+- `DB::Open()`：用户调用，**启动 db**，并准备环境
+- `DestroyDB()`：用户调用，**删除 db**
 
 <a></a>
 
-- `DBImpl::NewDB()`
-- `DBImpl::DBImpl()`
-- `DBImpl::~DBImpl()`
+- `DBImpl::NewDB()`：建立新 db，写 manifest 和 CURRENT
+- `DBImpl::DBImpl()`：准备参数等资源
+- `DBImpl::~DBImpl()`：用户调用 delete db，**关闭 db**
 
 <a></a>
 
-- `DBImpl::Get()`：
-- `DBImpl::Put()`：就是 `DB::Put()`
-- `DBImpl::Delete()`：就是 `DB::Delete()`
+- `DBImpl::Get()`：用户调用，**查找**给定 key 的 value
+- `DBImpl::Put()`：用户调用，**插入** k-v（就是 `DB::Put()`）
+- `DBImpl::Delete()`：用户调用，**删除** k-v（就是 `DB::Delete()`）
 - `DBImpl::Write(WriteBatch*)`：Put / Delete 底层的最终实现。**写 log，写 memtable**
 - `DBImpl::NewIterator()`：用来遍历 db（调用时的 version）
 - `DBImpl::GetSnapshot()`：用户调用，获得当前 sequence 所标记的快照
 - `DBImpl::ReleaseSnapshot()`：用户调用，释放不用的快照
-- `DBImpl::CompactRange()`：针对 range 来进行 compaction
+- `DBImpl::CompactRange()`：用户 **手动触发 compaction**。针对 range 来进行 compaction
 
 <a></a>
 
@@ -68,10 +68,10 @@
 - `DBImpl::MakeRoomForWrite()`：如果 mem 空间不足，compaction 并创建新 mem（如果 level-0 文件过多就阻塞）
 - `DBImpl::WriteLevel0Table(MemTable*, VersionEdit*, Version*)`：**将 memtable dump 成 sstable，不一定是 level-0**（参考 [VersionSet](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Version%20%26%20VersionSet%20-%202018-11-12%20-%20rsy.md)）；对于 Version 的修改记录在 `VersionEdit*` 里面
 - `VersionSet::LogAndApply()`：应用 VersionEdit 增量，**写入 Manifest 文件**，每次 compaction 时调用
-- `DBImpl::CompactMemTable()`
-- `DBImpl::MaybeScheduleCompaction()`
-- `DBImpl::DoCompactionWork(CompactionState*)`：通过读取提交的 `CompactionState*` 来 **完成实质性的 compaction**
+- `DBImpl::CompactMemTable()`：调用 `WriteLevel0Table()` 将 imm 写入 sstable，并应用 log，更新 VersionSet，删除废弃文件
+- `DBImpl::MaybeScheduleCompaction()`：**发起 compaction 调度**
 - `DBImpl::BackgroundCompaction()`：负责 compaction 总体逻辑
+- `DBImpl::DoCompactionWork(CompactionState*)`：通过读取提交的 `CompactionState*` 来 **完成实质性的 compaction**
 - `DBImpl::InstallCompactionResults(CompactionState*)`：将 compact 过程中记录的操作（VersionEdit）生效，**加入 VersionSet**
 - `DBImpl::FinishCompactionOutputFile(CompactionState*)`：输出文件之后的 finish 操作（包括**写入 filter-block，index-block 和 footer 等**，将新 sstable 加入 TableCache）
 - `DBImpl::CleanupCompaction(CompactionState*)`：完成 compaction 之后的工作
@@ -83,8 +83,11 @@
 
 ### `DB::Open()` 调用层次
 
+用户调用，启动 db，并准备环境
 
 ### `DestroyDB()` 调用层次
+
+用户调用，删除 db
 
 
 &nbsp;    
@@ -92,18 +95,24 @@
 
 ### `DBImpl::NewDB()` 调用层次
 
+- `DB::Open()`：
+  - `DBImpl::Recover()`：如果 dbname 不存在
+      - `DBImpl::NewDB()`
 
 ### `DBImpl::DBImpl()` 调用层次
 
+`DB::Open()` -> `DBImpl::DBImpl()`
 
 ### `DBImpl::~DBImpl()` 调用层次
+
+用户调用 delete db，关闭 db
 
 
 &nbsp;    
 
 ### `DBImpl::Get()` 调用层次
 
-
+用户调用，查找给定 key 的 value
 
 ### `DBImpl::Write(WriteBatch*)` 调用层次
 
@@ -112,11 +121,14 @@
 
 ### `DBImpl::CompactRange()` 调用层次
 
+用户 **手动触发 compaction**
+
 - `DBImpl::CompactRange()`
   - `Version::OverlapInLevel()`：首先查看**和这些 range 存在 overlap 的最底层的 level**
   - `DBImpl::TEST_CompactMemTable()`：等待 memtable 进行 compaction （不管是否存在 overlap）
   - 循环调用 `DBImpl::TEST_CompactRange()`：然后遍历这些 level，分别对每层进行 compact range
       - `DBImpl::MaybeScheduleCompaction()`
+          - `DBImpl::BackgroundCompaction()`
 
 
 &nbsp;   
@@ -193,25 +205,29 @@
 
 ### `DBImpl::CompactMemTable()` 调用层次
 
-`DBImpl::DoCompactionWork()` 中如果有 imm，就**等待** `DBImpl::CompactMemTable()`
+`DBImpl::DoCompactionWork()` 中如果有 imm，就阻塞 **等待** `DBImpl::CompactMemTable()`
 
-`DBImpl::BackgroundCompaction()` 中如果有 imm，就 `DBImpl::CompactMemTable()` 然后**退出**
+`DBImpl::BackgroundCompaction()` 中如果有 imm，就 `DBImpl::CompactMemTable()` 然后 **退出**
 
 ### `DBImpl::MaybeScheduleCompaction()` 调用层次
 
-
+- 由 `DBImpl::TEST_CompactRange()` 调用：用户手动触发 compaction，compact 一个 range
+- 由 `DBImpl::BackgroundCall()` 调用：刚刚的 compaction 有可能产生过多文件在一个 level，再次尝试 compaction
+- 由 `DBImpl::MakeRoomForWrite()` 调用：新建 mem，dump imm
+- 由 `DBImpl::Get()` 调用：如果是从 sstable 文件查询出来的，检查是否需要做 compaction
+- 由 `DB::Open()` 调用：回放 log，删除废弃文件，进行 compaction
 
 **这张图的实现细节在 [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf) 中最后 compact 部分有详细讲解。**
 
 ![](assets/LevelDB-BackgroundCompaction-Processes_11_12.jpg)
 
-### `DBImpl::DoCompactionWork(CompactionState*)` 调用层次
-
-`DBImpl::BackgroundCompaction()` -> `DBImpl::DoCompactionWork()`
-
 ### `DBImpl::BackgroundCompaction()` 调用层次
 
 `DBImpl::MaybeScheduleCompaction()` -> schedule `DBImpl::BackgroundCompaction()`
+
+### `DBImpl::DoCompactionWork(CompactionState*)` 调用层次
+
+`DBImpl::BackgroundCompaction()` -> `DBImpl::DoCompactionWork()`
 
 ### `DBImpl::InstallCompactionResults(CompactionState*)` 调用层次
 
@@ -232,8 +248,24 @@
 
 ### `DB::Open()`
 
+- `DBImpl::Recover()`
+  - 检查 CURRENT
+  - 调用 `VersionSet::Recover()`，从 CURRENT 读 Manifest (VersionEdit)
+  - 检查有没有更新的 log，如果有 log 比 Manifest 文件中记录的 log 要新，那说明上次没来得及从内存 dump，于是从 log 回放数据，按照 log 大小顺序调用 `DBImpl::RecoverLogFile()`
+  - 更新 VersionSet 的 max sequence
+- 如果没有回放日志 或者 mem 没有继续使用（`DBImpl::RecoverLogFile()`），那么**生成 新-log 和 新-mem**
+- 如果不打算继续用 manifest（`VersionSet::Recover(bool *save_manifest)`），就写入：`VersionSet::LogAndApply()`
+- 删除废弃文件（`DBImpl::DeleteObsoleteFiles()`）
+- 并尝试 compaction（`DBImpl::MaybeScheduleCompaction()`）
 
 ### `DestroyDB()`
+
+用户调用，删除 db
+
+- 获取 dbname 目录的文件列表到 filenames 中，如果为空则直接返回
+- 锁文件 <dbname>/lock，如果锁失败就返回
+- 遍历 filenames 文件列表，过滤掉 lock 文件，依次调用 `Env::DeleteFile()` 删除
+- 释放 lock 文件，并删除之，然后删除文件夹
 
 
 &nbsp;    
@@ -241,18 +273,31 @@
 
 ### `DBImpl::NewDB()`
 
+建立一个 Manifest 文件，然后将这个版本的 Manifest 文件的文件名作为内容写入 CURRENT 文件
 
 ### `DBImpl::DBImpl()`
 
+设置参数，生成 Memtable，TableCache 和 VersionSet
 
 ### `DBImpl::~DBImpl()`
+
+用户调用 delete db，关闭 db
+
+- 等待后台 compaction 任务结束
+- 释放 db 文件锁， <dbname>/lock 文件
+- 删除 VersionSet 对象，并释放 MemTable 对象
+- 删除 log 相关以及 TableCache 对象
+- 删除 options 的 block_cache 以及 info_log 对象
 
 
 &nbsp;    
 
+
 ### `DBImpl::Get()`
 
-
+- 查 mem
+- 查 imm
+- 查 sstable，并尝试 compaction
 
 ### `DBImpl::Put()`
 
@@ -386,7 +431,38 @@ db 中当前 Version 的 sstable 均在 `VersionSet::current_` 中，并发的�
 
 ### `DBImpl::MaybeScheduleCompaction()`
 
+- 如果正在 compact，那么返回
+- 如果 db 正在退出，那么返回
+- 检查是否需要 compaction：如果都没有，那么返回
+  - imm 为空（不需要 dump memtable）
+  - 手动 compact 未设置
+  - `VersionSet::NeedsCompaction()`，是否需要 自动触发 compact
+- 主线程调度 `DBImpl::BackgroundCall()` 加入队列，然后返回
 
+**注**：`DBImpl::BackgroundCall()` 最后会**再次调用** `DBImpl::MaybeScheduleCompaction()`。
+
+- `BackgroundCall()` 调用 `BackgroundCompaction()`
+- 之后再次调用 `MaybeScheduleCompaction()`，目的是：新的 Version 中可能 level 中有过多的 sstable，所以再次尝试 compaction
+- 主线程将任务入队列即返回，不会有递归栈溢出的问题。
+
+### `DBImpl::BackgroundCompaction()`
+
+负责 compaction 总体逻辑
+
+- 如果有 imm，立即 `DBImpl::CompactMemTable()` 然后退出
+- 准备 compaction 的信息：
+  - 如果是 **手动** compaction，调用 `VersionSet::CompactRange()`
+  - 如果是 **自动触发** compaction，调用 `VersionSet::PickCompaction()`
+- 处理 compaction：
+  - **自动触发** compaction：
+      - `VersionEdit::DeleteFile(level-n)`
+      - `VersionEdit::AddFile(level-n+1)`
+      - `VersionSet::LogAndApply(VersionEdit*)`
+  - **手动** compaction：
+      - `DBImpl::DoCompactionWork()`
+      - `DBImpl::CleanupCompaction()`
+      - `DBImpl::DeleteObsoleteFiles()`
+- 如果是 手动触发，最后整理一下 range 的信息，然后把 手动触发 设为 NULL
 
 ### `DBImpl::DoCompactionWork(CompactionState*)`
 
@@ -412,27 +488,7 @@ db 中当前 Version 的 sstable 均在 `VersionSet::current_` 中，并发的�
 - 更新 compact 的统计信息
 - 调用 `DBImpl:: InstallCompactionResults()` **更新 VersionSet，并写入 manifest 文件**
 
-
 > 为啥总是把 iterator 的 ++ 放在 for 循环体代码块的最后，而不是 for 后面括号里。。。第二次看见这样子，，有啥用？？
-
-### `DBImpl::BackgroundCompaction()`
-
-负责 compaction 总体逻辑
-
-- 如果有 imm，立即 `DBImpl::CompactMemTable()` 然后退出
-- 准备 compaction 的信息：
-  - 如果是 **手动** compaction，调用 `VersionSet::CompactRange()`
-  - 如果是 **自动触发** compaction，调用 `VersionSet::PickCompaction()`
-- 处理 compaction：
-  - **自动触发** compaction：
-      - `VersionEdit::DeleteFile(level-n)`
-      - `VersionEdit::AddFile(level-n+1)`
-      - `VersionSet::LogAndApply(VersionEdit*)`
-  - **手动** compaction：
-      - `DBImpl::DoCompactionWork()`
-      - `DBImpl::CleanupCompaction()`
-      - `DBImpl::DeleteObsoleteFiles()`
-- 如果是 手动触发，最后整理一下 range 的信息，然后把 手动触发 设为 NULL
 
 ### `DBImpl::InstallCompactionResults(CompactionState*)`
 
@@ -460,5 +516,5 @@ db 中当前 Version 的 sstable 均在 `VersionSet::current_` 中，并发的�
 - [leveldb - handbook](https://leveldb-handbook.readthedocs.io/zh/latest/)
 - [leveldb - DBImpl](https://dirtysalt.github.io/html/leveldb.html#org6a4ae1d) 参考了不少
 - [leveldb实现解析 - 淘宝-核心系统研发-存储](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/reference/DB%20leveldb%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90.pdf) 在 `DBImpl::xxxCompaction()` 方面讲得很清楚
-- [LevelDB源码分析](https://wenku.baidu.com/view/b3285278b90d6c85ec3ac687.html)
+- [LevelDB源码分析](https://wenku.baidu.com/view/b3285278b90d6c85ec3ac687.html) 很详细
 - [庖丁解LevelDB之概览](http://catkang.github.io/2017/01/07/leveldb-summary.html)
