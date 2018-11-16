@@ -2,7 +2,6 @@
 
 - [模块信息](#module_info)
 - [模块概要](#module_in_brief)
-- [模块功能](#module_function)
 - [接口说明](#interface_specification)
 - [相关依赖说明](#dependency_specification)
 - [内部实现细节](#inner_detail)
@@ -23,12 +22,6 @@
 ![](assets/DB_UML_11_15.png)   
 ![](assets/DBImpl_UML1_11_15.png)   
 ![](assets/DBImpl_UML2_11_15.png)
-
-
-&nbsp;   
-<a id="module_function"></a>
-## 模块功能
-
 
 
 &nbsp;   
@@ -409,7 +402,7 @@ db 中当前 Version 的 sstable 均在 `VersionSet::current_` 中，并发的�
 - 先检查是否正在被 memtable compaction，如果正在的话那么等待
 - 然后查看 level-0 文件数目是否过多，如果过多的话那么也等待（**限制写入速度保证系统 balance**）
 - 最后创建新的 memtable 以及 logfile，将原来的 memtable 保存起来准备后台 compaction
-- 发起 compaction（`DBImpl::MaybeScheduleCompaction()`），并且 force = false
+- 发起 compaction（`DBImpl::MaybeScheduleCompaction()`），并且 `force = false`
 
 按照性能角度出发的话，这种逻辑应该非常 make sense
 
@@ -439,11 +432,11 @@ db 中当前 Version 的 sstable 均在 `VersionSet::current_` 中，并发的�
   - `VersionSet::NeedsCompaction()`，是否需要 自动触发 compact
 - 主线程调度 `DBImpl::BackgroundCall()` 加入队列，然后返回
 
-**注**：`DBImpl::BackgroundCall()` 最后会**再次调用** `DBImpl::MaybeScheduleCompaction()`。
+**注**：`DBImpl::BackgroundCall()` 最后会**再次调用** `DBImpl::MaybeScheduleCompaction()`
 
 - `BackgroundCall()` 调用 `BackgroundCompaction()`
 - 之后再次调用 `MaybeScheduleCompaction()`，目的是：新的 Version 中可能 level 中有过多的 sstable，所以再次尝试 compaction
-- 主线程将任务入队列即返回，不会有递归栈溢出的问题。
+- 主线程将任务入队列即返回，不会有递归栈溢出的问题
 
 ### `DBImpl::BackgroundCompaction()`
 

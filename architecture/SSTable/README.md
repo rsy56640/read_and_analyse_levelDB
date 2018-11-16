@@ -1,16 +1,15 @@
-
-- [FilterBlock](#FilterBlock)
-- [Block](#Block)
-- [Table](#Table)
-- [MergingIterator](#MergingIterator)
-- [TwoLevelIterator](#TwoLevelIterator)
-- [Filter(meta) Block](#filter_block)
-- [Compaction](#Compaction)
-- [LSM](#LSM)
+- [FilterBlock](#filterblock)
+- [Block](#block)
+- [Table](#table)
+- [MergingIterator](#mergingiterator)
+- [TwoLevelIterator](#twoleveliterator)
+- [Filter(meta) Block](#filter_meta_block)
+- [Compaction](#compaction)
+- [LSM](#lsm)
 
 
 &nbsp;   
-<a id="FilterBlock"></a>
+<a id="filterblock"></a>
 ## [FilterBlock](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/FilterBlock%20-%202018-10-03%20-%20rsy.md)
 ![](assets/FilterBlock_structure_10_03.png)
 
@@ -18,14 +17,14 @@
 
 
 &nbsp;   
-<a id="Block"></a>
+<a id="block"></a>
 ## [Block](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Block%20-%202018-10-02%20-%20rsy.md)
 ![](assets/data_block_record_11_12.png)
 ![](assets/Block_data_structure_10_02.png)
 
 
 &nbsp;   
-<a id="Table"></a>
+<a id="table"></a>
 ## [Table](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Table%20-%202018-10-04%20-%20rsy.md)
 
 ![](assets/leveldb_sstable_structure_10_03.png)
@@ -54,7 +53,7 @@
 
 
 &nbsp;   
-<a id="MergingIterator"></a>
+<a id="mergingiterator"></a>
 ## [MergingIterator](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/MergingIterator%20-%202018-10-05%20-%20rsy.md)
 
 ![](assets/MergingIterator_children_10_05.png)
@@ -65,14 +64,14 @@
 
 
 &nbsp;   
-<a id="TwoLevelIterator"></a>
+<a id="twoleveliterator"></a>
 ## [TwoLevelIterator](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/TwoLevelIterator%20-%202018-10-03%20-%20rsy.md)
 
 将对 Table 的遍历封装，对外展现如同线性遍历。
 
 
 &nbsp;   
-<a id="filter_block"></a>
+<a id="filter_meta_block"></a>
 ## [Filter(meta) Block](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/FilterBlock%20-%202018-10-03%20-%20rsy.md)
 
 **`filter block` 就是 `meta block`。**    
@@ -82,7 +81,7 @@
 
 
 &nbsp;   
-<a id="Compaction"></a>
+<a id="compaction"></a>
 ## [Compaction](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/Compaction%20-%202018-10-05%20-%20rsy.md)
 
 - LevelDB 存储分为两部分，一部分在内存，另一部分在磁盘上。内存中方便快速查找， 查找失败后，去磁盘上查找。一段时间后或内存达到一定大小，会将内存中的 compact 成 .sst 文件存在磁盘
@@ -103,7 +102,7 @@
 
 
 &nbsp;   
-<a id="LSM"></a>
+<a id="lsm"></a>
 ## [LSM](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/SSTable/LSM%20-%202018-10-06%20-%20rsy.md)
 
 ![](assets/LSM_Btree_sequential_insert_10_06.png)
@@ -127,12 +126,3 @@ B树在插入的时候，如果是最后一个node,那么速度非常快，因�
 但是读操作会变的越来越慢随着 sstable 的个数增加，因为每一个 sstable 都要被检查。最基本的的方法就是页缓存（也就是 leveldb 的 TableCache，将 sstable 按照 LRU 缓存在内存中）在内存中，减少二分查找的消耗。即使有每个文件的索引，随着文件个数增多，读操作仍然很慢。通过周期的合并文件，来保持文件的个数，因此读操作的性能在可接收的范围内。即便有了合 并操作，读操作仍然会访问大量的文件，大部分的实现通过布隆过滤器来避免大量的读文件操作，布隆过滤器是一种高效的方法来判断一个 sstable 中是否包 含一个特定的 key。
 
 我们交换了读和写的随机 I/O。这种折衷很有意义，我们可以通过软件实现的技巧像布隆过滤器或者硬件（大文件 cache）来优化读性能。
-
-
-&nbsp;   
-<a id=""></a>
-## []()
-
-
-
-

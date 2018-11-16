@@ -204,28 +204,35 @@
 &nbsp;   
 ### 10-17 ~ 之后
 
-- [ValueType, SequenceNumber]()：任思远
+- [ValueType & SequenceNumber](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/ValueType%20%26%20SequenceNumber%202018-11-07%20-%20rsy.md)：任思远
   - `db/dbformat.h`
   - 指导：
       - `put` 插入新的 kv 数据；`delete` 是 `put` 空，为了区分真实 kv 数据和删除操作的 mock 数据，使用 `ValueType` 来标识
       - leveldb 中的每次更新（`put`/`delete`)操作都拥有一个版本，由 `SequnceNumber` 来标识，整个 db 有一个全局值保存着当前使用到的 `SequnceNumber`
   - 总结：
-- [Snapshot]()：任思远
-  - ``
+- [Snapshot](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Snapshot%20-%202018-11-07%20-%20rsy.md)：任思远
+  - `include/leveldb/snapshot.h`
+  - 总结：依赖于 SequnceNumber 来标识时间点
+- [Manifest & VersionEdit](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Manifest%20%26%20VersionEdit%20-%202018-11-07%20-%20rsy.md)：任思远
+  - `db.version_set.cc`, `db/version_edit.h`, `db/version_edit.cc`
+  - 总结：Manifest 文件保存元信息数据，VersionEdit 是 Version 的增量
+- [Log](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Log%20-%202018-11-08%20-%20rsy.md)：任思远
+  - `db/log_format.h`, `db/log_reader.h`, `db/log_reader.cc`, `db/og_writer.h`, `db/log_writer.cc`
+  - 总结：`DBImpl::Write()` 中先写 log，然后更新 memtable
+- [Recover](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Recover%20-%202018-11-08%20-%20rsy.md)：任思远
+  - `db/version_set.h`, `db/version_set.cc`, `db/db_impl.h`, `db/db_impl.cc`
+  - 总结：数据库每次启动时，都会有一个 recover 的过程，简要地来说，就是利用 Manifest 信息重新构建一个最新的 version
+- [Version & VersionSet](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/Version%20%26%20VersionSet%20-%202018-11-12%20-%20rsy.md)：任思远
+  - `db/version_set.h`, `db/version_set.cc`
   - 总结：
-- [Manifest & VersionEdit]()：任思远
-  - ``
+      - Version 是管理某个版本的所有 sstable 的类，就其导出接口而言，无非是：
+          - 遍历 sstable
+          - 查找 k/v
+          - 为 compaction 做些事情
+          - 给定 range，检查重叠情况
+      - VersionSet 管理整个 db 的当前状态，负责包括 Log, Compaction, Recover 等
+- [DBImpl](https://github.com/rsy56640/read_and_analyse_levelDB/blob/master/architecture/DB/DBImpl%20-%202018-11-14%20-%20rsy.md)：任思远
+  - `include/leveldb/db.h`, `db/db_impl.h`, `db_impl.cc`
   - 总结：
-- [Log]()：任思远
-  - ``
-  - 总结：
-- [Recover]()：任思远
-  - ``
-  - 总结：
-- [Version & VersionSet]()：任思远
-  - ``
-  - 总结：
-- [DB流程]()：任思远
-  - ``
-  - 总结：
-
+      - 实现了所有面对用户的接口
+      - 负责 Recover，Log，Compaction 等

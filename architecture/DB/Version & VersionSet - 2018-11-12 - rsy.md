@@ -40,7 +40,8 @@ leveldb 对单版本的 sstable 文件管理，主要集中在 Version 类中。
 
 ![](./assets/Version_VersionEdit_11_08.png)
 
-**Version 版本类**：   
+### Version 版本类
+
 这个类主要功能
 
 - 首先是提供了在**当前版本搜索键值的 Get 方法** -- `Version::Get()`
@@ -52,13 +53,16 @@ Version 是管理某个版本的所有 sstable 的类，就其导出接口而言
 
 ![](./assets/Version_Builder_view_11_12.jpg)
 
+&nbsp;   
+
+### VersionSet
+
+管理整个 db 的当前状态，负责包括 Log, Compaction, Recover 等。
+
 > **注意，下面这个图有误，dummy 之后的 Version 是向后添加，current 总是指向 最后一个 Version**    
 > 当然你也可以说 prev 指针向右。。。
 
 ![](./assets/VersionSet_11_08.png)
-
-**VersionSet**：   
-管理整个 db 的当前状态，负责包括 Log, Compaction, Recover 等。
 
 ![](./assets/LevelDB-BackgroundCompaction-Processes_11_12.jpg)
 

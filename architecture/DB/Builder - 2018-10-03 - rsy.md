@@ -17,7 +17,7 @@
 <a id="module_in_brief"></a>
 ## 模块概要
 
-`BuildTable()`：为 level-0 创建 `Table`，并把 metadata 存到 `FileMetaData* meta`
+`BuildTable()`：为 level-? 创建 `Table`，并把 metadata 存到 `FileMetaData* meta`
 
 
 &nbsp;   
