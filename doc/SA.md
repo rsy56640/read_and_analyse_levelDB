@@ -77,6 +77,10 @@ I have played around a bit with Level, and I’ve been really impressed by it’
 
 ![](assets/SA_Stakeholder_sponsors_level_10_09.png)
 
+### [levelDB is used in Facebook](https://rocksdb.org/)
+
+RocksDB is a high performance embedded database for key-value data. It is a fork of LevelDB by Facebook optimized to exploit many central processing unit (CPU) cores, and make efficient use of fast storage, such as solid-state drives (SSD), for input/output (I/O) bound workloads.
+
 
 &nbsp;   
 <a id="context_view"></a>
@@ -299,21 +303,28 @@ Then the major compaction process, determine what is a k-v record is abandoned? 
 
 ### Version
 
-![](https://img.shields.io/badge/SA-TODO-yellow.svg)
+Version saves the file all the information of the current disk and memory, generally only a Version called "version current" (the current version). 
+
+(old)Version + VersionEdit --> (new)Version
+
+VersionEdit will be saved to the MANIFEST file, as data recovery will be from the MANIFEST file to read out data reconstruction.
+
+![](../architecture/DB/assets/Version_VersionEdit_11_08.png)
+
+When a Compaction ends (will generate a new file, before the merger documents need to be deleted), Leveldb creates a new version as the current version, the original version will change into the current version of history.
 
 
+![](../architecture/DB/assets/VersionSet_11_08.png)
 
-
+VersionSet is the set of all Version, manages all the survival of Version.
+VersionEdit said the changes between Version, equivalent to delta increment, expressed increased the number of files, delete the file. The graph below shows the relationship between them.
 
 
 &nbsp;   
 <a id="evolution_perspective"></a>
 ## 6. Evolution Perspective
 
-[The Google forum for levelDB](https://groups.google.com/forum/#!forum/leveldb)   
-[Issues of levelDB on Github](https://github.com/google/leveldb/issues)
-
-LevelDB is based on concepts from Google's Bigtable database system. The table implementation for the Bigtable system was developed starting in about 2004, and is based on a different Google internal code base than the LevelDB code. That code base relies on a number of Google code libraries that are not themselves open sourced, so directly open sourcing that code would have been difficult. Jeff Dean and Sanjay Ghemawat wanted to create a system resembling the Bigtable tablet stack that had minimal dependencies and would be suitable for open sourcing, and also would be suitable for use in Chrome for the IndexedDB implementation. They wrote LevelDB starting in early 2011, with the same general design as the Bigtable tablet stack, but not sharing any of the code.
+LevelDB is based on concepts from Google's Bigtable database system. The table implementation for the Bigtable system was developed starting in about 2004, and is based on a different Google internal code base than the LevelDB code. That code base relies on a number of Google code libraries that are not themselves open sourced, so directly open sourcing that code would have been difficult. Jeff Dean and Sanjay Ghemawat wanted to create a system resembling the Bigtable tablet stack that had minimal dependencies and would be suitable for open sourcing, and also would be suitable for use in Chrome for the IndexedDB implementation. They wrote LevelDB starting in early 2011, with the same general design as the Bigtable tablet stack, and opened leveldb to the community. levelDB is now still the low-level storage engine behind Google's Bigtable and MapReduce servers.
 
 
 &nbsp;   
@@ -329,6 +340,16 @@ LevelDB is used in bitcoin and it had a bug that, under rare conditions, could c
 - Mush use of type erasure impedes the progress of reading source code and maintain the project.
 - I've once noticed that the iteration_expression in for-loop is located at the end of the code block, which is more than 100 lines below the for-loop.
 
+### Code Quality
+
+[![CodeFactor](https://www.codefactor.io/repository/github/rsy56640/leveldb/badge)](https://www.codefactor.io/repository/github/rsy56640/leveldb)
+
+Some files quality detection:
+
+![](assets/SA_code_quality_11_18.png)
+
+In fact, it's absolutely more than B+, though many functions and modules in levelDB is sort of large. It is of great necessity for a storage engine to do some complex work.
+
 
 &nbsp;   
 <a id="conclusion"></a>
@@ -343,7 +364,5 @@ LevelDB is designed to be used as persistent storage engine in Google Bigtable. 
 
 - [What are the keys used in the blockchain levelDB (ie what are the key:value pairs)?](https://bitcoin.stackexchange.com/questions/28168/what-are-the-keys-used-in-the-blockchain-leveldb-ie-what-are-the-keyvalue-pair)
 - [Node.js + LevelDB](https://coderead.wordpress.com/2013/04/04/node-js-leveldb/)
-
-
-
-
+- [The Google forum for levelDB](https://groups.google.com/forum/#!forum/leveldb)   
+- [Issues of levelDB on Github](https://github.com/google/leveldb/issues)
