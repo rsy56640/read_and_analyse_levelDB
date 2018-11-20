@@ -30,6 +30,8 @@ LevelDB is an open source on-disk key-value store written by Google fellows Jeff
 <a id="introduction"></a>
 ## 1. Introduction
 
+![](assets/level_history_11_20.png)
+
 LevelDB is based on concepts from Google's Bigtable database system. The table implementation for the Bigtable system was developed starting in about 2004, and is based on a different Google internal code base than the LevelDB code. That code base relies on a number of Google code libraries that are not themselves open sourced, so directly open sourcing that code would have been difficult. Jeff Dean and Sanjay Ghemawat wanted to create a system resembling the Bigtable tablet stack that had minimal dependencies and would be suitable for open sourcing, and also would be suitable for use in Chrome for the IndexedDB implementation. They wrote LevelDB starting in early 2011, with the same general design as the Bigtable tablet stack, but not sharing any of the code.
 
 ### Features
@@ -77,9 +79,14 @@ I have played around a bit with Level, and I’ve been really impressed by it’
 
 ![](assets/SA_Stakeholder_sponsors_level_10_09.png)
 
-### [levelDB is used in Facebook](https://rocksdb.org/)
+### [levelDB is used in Facebook.RocksDB](https://rocksdb.org/)
+
+![](assets/leveldb_rocksdb_11_20.png)
 
 RocksDB is a high performance embedded database for key-value data. It is a fork of LevelDB by Facebook optimized to exploit many central processing unit (CPU) cores, and make efficient use of fast storage, such as solid-state drives (SSD), for input/output (I/O) bound workloads.
+
+#### Potential Use-cases of RocksDB:   
+RocksDB can be used by applications that need low latency database accesses. A user-facing application that stores the viewing history and state of users of a website can potentially store this content on RocksDB. A spam detection application that needs fast access to big data sets can use RocksDB. A graph-search query that needs to scan a data set in realtime can use RocksDB. RocksDB can be used to cache data from Hadoop, thereby allowing applications to query Hadoop data in realtime. A message-queue that supports a high number of inserts and deletes can use RocksDB.
 
 
 &nbsp;   
