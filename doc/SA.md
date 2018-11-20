@@ -357,7 +357,7 @@ Some files quality detection:
 
 ![](assets/SA_code_quality_11_18.png)
 
-In fact, it's absolutely more than B+, though many functions and modules in levelDB is sort of large. It is of great necessity for a storage engine to do some complex work.
+In fact, it's absolutely more than B+ rating, though many functions and modules in levelDB is sort of large and complex. It is of great necessity for a storage engine to do some complex work.
 
 
 &nbsp;   
@@ -371,6 +371,7 @@ LevelDB is designed to be used as persistent storage engine in Google Bigtable. 
 <a id="references"></a>
 ## 9. References
 
+- [The principle of LevelDb analysis](https://www.programering.com/a/MjMyMTNwATQ.html)
 - [What are the keys used in the blockchain levelDB (ie what are the key:value pairs)?](https://bitcoin.stackexchange.com/questions/28168/what-are-the-keys-used-in-the-blockchain-leveldb-ie-what-are-the-keyvalue-pair)
 - [Node.js + LevelDB](https://coderead.wordpress.com/2013/04/04/node-js-leveldb/)
 - [The Google forum for levelDB](https://groups.google.com/forum/#!forum/leveldb)   
