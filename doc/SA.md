@@ -32,6 +32,8 @@ LevelDB is an open source on-disk key-value store written by Google fellows Jeff
 
 ![](assets/level_history_11_20.png)
 
+The concept of log-structured system is raised in 1988, and it's first implemented in 1992, for developing a Unix-like distributed operating system "Sprite". In 2006, Google published a thesis on OSDI "Bigtable: A Distributed Storage System for Structured Data". In 2011, Google made a decision to open source the storage engine under Bigtable, so LevelDB were born.
+
 LevelDB is based on concepts from Google's Bigtable database system. The table implementation for the Bigtable system was developed starting in about 2004, and is based on a different Google internal code base than the LevelDB code. That code base relies on a number of Google code libraries that are not themselves open sourced, so directly open sourcing that code would have been difficult. Jeff Dean and Sanjay Ghemawat wanted to create a system resembling the Bigtable tablet stack that had minimal dependencies and would be suitable for open sourcing, and also would be suitable for use in Chrome for the IndexedDB implementation. They wrote LevelDB starting in early 2011, with the same general design as the Bigtable tablet stack, but not sharing any of the code.
 
 ### Features
