@@ -164,8 +164,6 @@ LevelDB will rebuild the lateset version by the leverage of `.manifest ` wheneve
 <a id="architecture"></a>
 ## 5. Architecture
 
-levelDB is NoSQL database, which adopt sequential writing strategy other than random I/O.
-
 ![](assets/leveldb_UML_10_01.png)
 
 ![](../architecture/SSTable/assets/Minor_Compaction_10_05.png)
