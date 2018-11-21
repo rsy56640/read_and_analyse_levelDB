@@ -157,7 +157,7 @@ On every write, we generate a sequence number. We store the number locally and u
 
 ![](../architecture/DB/assets/version_recover_10_12.jpeg)
 
-LevelDB will rebuild the lateset version by the leverage of .manifest whenever levelDB starts, which is called recovery.
+LevelDB will rebuild the lateset version by the leverage of `.manifest ` whenever levelDB starts, which is called recovery.
 
 
 &nbsp;   
@@ -171,11 +171,22 @@ levelDB is NoSQL database, which adopt sequential writing strategy other than ra
 ![](../architecture/SSTable/assets/Minor_Compaction_10_05.png)
 
 
+### Log-Repair pattern
+
+![](../architecture/DB/assets/two_log_11_09.jpeg)
+
+Before the data is written into memtable, it is firstly stored in the log files. The log files are frozen and collected as long as the memtable is dumped into SSTable. If server suddenly crashes, we can restart it and recover the data from the log.
+
+### MVCC - Multiple Version Concurrency Control
+
+A querying request is accepted and executed in the current version, and an updating request is executed on a new version, which is later added in the version set.
+
+
 &nbsp;   
 <a id="module_view"></a>
 ## 5.1 Module View
 
-![](assets/SA_architecture_10_09.jpg)
+![](assets/leveldb_flow_11_21.png)
 
 As can be seen from the diagram, a LevelDb static structure consists of six main parts: several main file memory in the MemTable and Immutable MemTable and disk: Current file, Manifest file, log file and SSTable file. Of course, LevelDb in addition to the six main parts and some auxiliary files, but these six files and data structure is the main body of the LevelDb elements.
 
@@ -339,6 +350,8 @@ LevelDB is based on concepts from Google's Bigtable database system. The table i
 &nbsp;   
 <a id="technical_debt_analysis"></a>
 ## 7. Technical Debt Analysis
+
+In 2011, the Google/Bigtable org decided to reorganize the storage engine behind the Bigtable, leading to the birth of LevelDB. Thus they got rid of the old dependency and technical debt. And thanks for the open source community, LevelDB has developed at great success.
 
 ### Defect Debt
 
