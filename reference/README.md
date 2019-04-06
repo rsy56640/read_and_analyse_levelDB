@@ -6,6 +6,7 @@
 - [leveldb - 超全讲解..........](https://dirtysalt.github.io/html/leveldb.html)
 - [LevelDB源码分析 - 百度文库 100多页..................](https://wenku.baidu.com/view/b3285278b90d6c85ec3ac687.html)
 - [The principle of LevelDb analysis - 英文，很多文章的出处](https://www.programering.com/a/MjMyMTNwATQ.html)
+- [Leveldb代码阅读笔记 - codedump](https://www.codedump.info/post/20190215-leveldb/)
 - [存储引擎技术架构与内幕 (leveldb-1) #58](https://github.com/abbshr/abbshr.github.io/issues/58)
 - [浅析 Bigtable 和 LevelDB 的实现](https://draveness.me/bigtable-leveldb)
 - [LevelDB实现总结](http://morefreeze.github.io/2016/05/LevelDB-Summarize.html)
